@@ -24,16 +24,16 @@ public class UserController {
         return userService.save(user);
     }
 
-    @PutMapping
+    @PutMapping("/{uuid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserDTO update(@RequestBody UserDTO user) {
-        return userService.update(user);
+    public UserDTO update(@PathVariable String uuid, @RequestBody UserDTO user) {
+        return userService.update(uuid, user);
     }
 
-    @PatchMapping
+    @PatchMapping("/{uuid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserDTO partialUpdate(@RequestBody UserDTO user) {
-        return userService.partialUpdate(user);
+    public UserDTO partialUpdate(@PathVariable String uuid, @RequestBody UserDTO user) {
+        return userService.partialUpdate(uuid, user);
     }
 
     @DeleteMapping("/{uuid}")

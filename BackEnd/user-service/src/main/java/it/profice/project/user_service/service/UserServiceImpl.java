@@ -1,12 +1,14 @@
 package it.profice.project.user_service.service;
 
 import it.profice.project.user_service.dto.UserDTO;
+import it.profice.project.user_service.model.Role;
 import it.profice.project.user_service.model.User;
 import it.profice.project.user_service.repository.UserRepository;
 import it.profice.project.user_service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.UUID;
 
@@ -16,13 +18,36 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     public UserDTO findByUuid(String uuid) {
-        return modelToDto(
-                userRepository.findByUuid(uuid)
-                        .orElseThrow(UserNotFoundException::new)
-        );
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(UserNotFoundException::new);
+
+        UserDTO ret = modelToDto(user);
+
+        if (user.getRole() == Role.USER) {
+            List<ReservationDTO> reservations = webClientBuilder.build()
+                    .get()
+                    .uri("http://reservation-service/api/v1/reservations/{uuid}/user",
+                            uriBuilder -> uriBuilder.build(uuid))
+                    .retrieve()
+                    .bodyToMono(ReservationDTO.class)
+                    .block();
+            ret.setReservation(reservations);
+        } else {
+            List<EventDTO> events = webClientBuilder.build()
+                    .get()
+                    .uri("http://reservation-service/api/v1/reservations/{uuid}/event",
+                            uriBuilder -> uriBuilder.build(uuid))
+                    .retrieve()
+                    .bodyToMono(EventDTO.class)
+                    .block();
+            ret.setEvent(events);
+        }
+
+        return ret;
     }
 
     @Override
@@ -32,21 +57,21 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDTO update(UserDTO user) {
-        User userToUpdate = userRepository.findByUuid(user.getUuid())
+    public UserDTO update(String uuid, UserDTO user) {
+        User userToUpdate = userRepository.findByUuid(uuid)
                 .orElseThrow(UserNotFoundException::new);
 
-        user.setName(user.getName());
-        user.setPassword(user.getPassword());
-        user.setEmail(user.getEmail());
-        user.setRole(user.getRole());
+        userToUpdate.setName(user.getName());
+        userToUpdate.setPassword(user.getPassword());
+        userToUpdate.setEmail(user.getEmail());
+        userToUpdate.setRole(user.getRole());
 
         return modelToDto(userRepository.save(userToUpdate));
     }
 
     @Override
-    public UserDTO partialUpdate(UserDTO user) {
-        User userToUpdate = userRepository.findByUuid(user.getUuid())
+    public UserDTO partialUpdate(String uuid, UserDTO user) {
+        User userToUpdate = userRepository.findByUuid(uuid)
                 .orElseThrow(UserNotFoundException::new);
 
         if (user.getName() != null) userToUpdate.setName(user.getName());

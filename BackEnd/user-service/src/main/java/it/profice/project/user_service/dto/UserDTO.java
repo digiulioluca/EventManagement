@@ -17,5 +17,7 @@ public class UserDTO {
     private String password;
     private String email;
     private Role role;
+    private List<ReservationDTO> reservations;
+    private List<EventDTO> events;
 
 }
