@@ -1,10 +1,13 @@
 package it.profice.project.user_service.dto;
 
+import it.profice.project.event_service.dto.EventDTO;
 import it.profice.project.user_service.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @Builder

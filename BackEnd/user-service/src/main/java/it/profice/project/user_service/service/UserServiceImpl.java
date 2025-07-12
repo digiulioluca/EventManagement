@@ -1,5 +1,6 @@
 package it.profice.project.user_service.service;
 
+import it.profice.project.event_service.dto.EventDTO;
 import it.profice.project.user_service.dto.UserDTO;
 import it.profice.project.user_service.model.Role;
 import it.profice.project.user_service.model.User;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,16 +38,17 @@ public class UserServiceImpl implements UserService{
                     .retrieve()
                     .bodyToMono(ReservationDTO.class)
                     .block();
-            ret.setReservation(reservations);
+            ret.setReservations(reservations);
         } else {
             List<EventDTO> events = webClientBuilder.build()
                     .get()
                     .uri("http://reservation-service/api/v1/reservations/{uuid}/event",
                             uriBuilder -> uriBuilder.build(uuid))
                     .retrieve()
-                    .bodyToMono(EventDTO.class)
-                    .block();
-            ret.setEvent(events);
+                    .bodyToFlux(EventDTO.class)
+                    .collectList()
+                            .block();
+            ret.setEvents(events);
         }
 
         return ret;
