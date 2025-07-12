@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
         } else {
             List<EventDTO> events = webClientBuilder.build()
                     .get()
-                    .uri("http://reservation-service/api/v1/reservations/{uuid}/event",
+                    .uri("http://event-service/api/v1/events/{uuid}/events",
                             uriBuilder -> uriBuilder.build(uuid))
                     .retrieve()
                     .bodyToFlux(EventDTO.class)

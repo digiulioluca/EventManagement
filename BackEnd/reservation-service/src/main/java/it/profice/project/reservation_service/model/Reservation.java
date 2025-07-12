@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -23,6 +23,6 @@ public class Reservation {
     private String uuid;
     private String userUuid;
     private String eventUuid;
-    private Date date;
+    private LocalDate date;
 
 }

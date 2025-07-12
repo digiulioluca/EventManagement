@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface EventService {
     List<EventDTO> findAll();
+    List<EventDTO> findByUserUuid(String userUuid);
     EventDTO findByUuid(String uuid);
     EventDTO save (EventDTO newEvent);
     EventDTO update(String uuid, EventDTO event);

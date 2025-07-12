@@ -24,6 +24,11 @@ public class EventController {
         return eventService.findByUuid(uuid);
     }
 
+    @GetMapping("/{userUuid}/events")
+    public List<EventDTO> findByUserUuid(@PathVariable String userUuid) {
+        return eventService.findByUserUuid(userUuid);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventDTO save(@RequestBody EventDTO newEvent) {

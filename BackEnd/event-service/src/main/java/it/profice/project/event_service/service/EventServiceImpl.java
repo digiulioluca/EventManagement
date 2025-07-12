@@ -27,6 +27,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<EventDTO> findByUserUuid(String userUuid) {
+        return eventRepository.findByUserUuid(userUuid)
+                .stream()
+                .map(this::modelToDto)
+                .toList();
+    }
+
+    @Override
     public EventDTO findByUuid(String uuid) {
         return modelToDto(eventRepository.findByUuid(uuid).orElseThrow(EventNotFoundException::new));
     }
@@ -89,6 +97,7 @@ public class EventServiceImpl implements EventService {
                 .availableSeats(event.getAvailableSeats())
                 .state(event.isState())
                 .eventCategory(event.getEventCategory())
+                .userUuid(event.getUserUuid())
                 .build();
     }
 
@@ -103,6 +112,7 @@ public class EventServiceImpl implements EventService {
                 .availableSeats(event.getAvailableSeats())
                 .state(event.isState())
                 .eventCategory(event.getEventCategory())
+                .userUuid(event.getUserUuid())
                 .build();
     }
 }

@@ -7,6 +7,7 @@ import it.profice.project.reservation_service.exception.ReservationNotFoundExcep
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +20,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationDTO save(ReservationDTO reservation){
        reservation.setUuid(UUID.randomUUID().toString());
+       reservation.setDate(LocalDate.now());
         return modelToDto(reservationRepository.save(dtoToModel(reservation)));
     }
 

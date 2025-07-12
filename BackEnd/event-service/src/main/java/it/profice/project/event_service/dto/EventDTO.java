@@ -22,4 +22,5 @@ public class EventDTO {
     private Integer availableSeats;
     private boolean state;
     private Category eventCategory;
+    private String userUuid;
 }
