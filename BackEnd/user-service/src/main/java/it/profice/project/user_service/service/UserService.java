@@ -8,5 +8,7 @@ public interface UserService {
     UserDTO update(String uuid, UserDTO user);
     UserDTO partialUpdate(String uuid, UserDTO user);
     void delete(String uuid);
+    UserDTO findByEmail(String email);
+
 }
 
