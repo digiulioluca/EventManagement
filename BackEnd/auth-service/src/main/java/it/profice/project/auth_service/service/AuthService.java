@@ -1,7 +1,7 @@
 package it.profice.project.auth_service.service;
 
 import it.profice.project.auth_service.dto.*;
-import it.profice.project.auth_service.repository.UserRepository;
+import it.profice.project.auth_service.repository.UserSecurityRepository;
 import it.profice.project.user_service.model.Role;
 import it.profice.project.user_service.model.User;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final UserSecurityRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;

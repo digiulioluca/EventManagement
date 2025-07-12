@@ -3,7 +3,7 @@ package it.profice.project.auth_service.security;
 import it.profice.project.user_service.model.User;
 import it.profice.project.user_service.model.UserDetails;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
+@Builder
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;

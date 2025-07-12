@@ -1,7 +1,7 @@
 package it.profice.project.auth_service.service;
 
 import it.profice.project.auth_service.security.UserDetailsImpl;
-import it.profice.project.auth_service.repository.UserRepository;
+import it.profice.project.auth_service.repository.UserSecurityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserSecurityRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

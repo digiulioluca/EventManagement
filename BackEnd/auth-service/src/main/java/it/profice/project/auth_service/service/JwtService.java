@@ -7,11 +7,13 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import it.profice.project.auth_service.security.UserDetailsImpl;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class JwtService {
 
     private static final String SECRET_KEY = "your-super-secret-key";
