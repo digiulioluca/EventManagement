@@ -9,6 +9,7 @@ import it.profice.project.user_service.repository.UserRepository;
 import it.profice.project.user_service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final WebClient.Builder webClientBuilder;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO findByUuid(String uuid) {
@@ -58,6 +60,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDTO save(UserDTO newUser) {
         newUser.setUuid(UUID.randomUUID().toString());
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         return modelToDto(userRepository.save(dtoToModel(newUser)));
     }
 
@@ -67,7 +70,9 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(UserNotFoundException::new);
 
         userToUpdate.setName(user.getName());
-        userToUpdate.setPassword(user.getPassword());
+        if (user.getPassword() != null) {
+            userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));  // cripta
+        }
         userToUpdate.setEmail(user.getEmail());
         userToUpdate.setRole(user.getRole());
 
@@ -80,7 +85,7 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(UserNotFoundException::new);
 
         if (user.getName() != null) userToUpdate.setName(user.getName());
-        if (user.getPassword() != null) userToUpdate.setPassword(user.getPassword());
+        if (user.getPassword() != null) userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getEmail() != null) userToUpdate.setEmail(user.getEmail());
         if (user.getRole() != null) userToUpdate.setRole(user.getRole());
 
@@ -93,6 +98,14 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(UserNotFoundException::new);
         userRepository.deleteById(userToDelete.getId());
     }
+
+    @Override
+    public UserDTO findByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+        return modelToDto(user);
+    }
+
 
     private UserDTO modelToDto(User user) {
         return UserDTO.builder()

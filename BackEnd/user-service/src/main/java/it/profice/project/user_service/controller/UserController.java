@@ -41,4 +41,10 @@ public class UserController {
     public void delete(@PathVariable String uuid) {
         userService.delete(uuid);
     }
+
+    @GetMapping("/email/{email}")
+    public UserDTO getByEmail(@PathVariable String email) {
+        return userService.findByEmail(email);
+    }
+
 }

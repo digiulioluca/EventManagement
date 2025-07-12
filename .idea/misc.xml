@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/BackEnd/event-service/pom.xml" />
         <option value="$PROJECT_DIR$/BackEnd/discovery-server/pom.xml" />
         <option value="$PROJECT_DIR$/BackEnd/reservation-service/pom.xml" />
+        <option value="$PROJECT_DIR$/BackEnd/auth-service/pom.xml" />
       </list>
     </option>
   </component>
