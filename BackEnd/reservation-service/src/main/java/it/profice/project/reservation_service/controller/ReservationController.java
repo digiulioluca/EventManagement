@@ -2,6 +2,7 @@ package it.profice.project.reservation_service.controller;
 
 import it.profice.project.reservation_service.dto.ReservationDTO;
 import it.profice.project.reservation_service.service.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class ReservationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReservationDTO save(@RequestBody ReservationDTO reservation){
+    public ReservationDTO save(@RequestBody @Valid ReservationDTO reservation){
         return reservationService.save(reservation);
     }
 
