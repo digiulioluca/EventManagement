@@ -1,6 +1,7 @@
 package it.profice.project.user_service.dto;
 
 import it.profice.project.event_service.dto.EventDTO;
+import it.profice.project.reservation_service.dto.ReservationDTO;
 import it.profice.project.user_service.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
