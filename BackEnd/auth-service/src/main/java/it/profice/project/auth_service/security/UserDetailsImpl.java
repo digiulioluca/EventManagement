@@ -1,23 +1,36 @@
 package it.profice.project.auth_service.security;
 
 import it.profice.project.user_service.model.User;
-import it.profice.project.user_service.model.UserDetails;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
-@AllArgsConstructor
-@Builder
+@Getter
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
+
+    public UserDetailsImpl(User user) {
+        this.user = user;
+    }
+
+    public String getUuid() {
+        return user.getUuid();
+    }
+
+    public String getRole() {
+        return user.getRole().name();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+        return Collections.singletonList(
+                new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+        );
     }
 
     @Override
@@ -48,13 +61,5 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public String getRole() {
-        return user.getRole().name();
-    }
-
-    public String getUuid() {
-        return user.getUuid();
     }
 }
