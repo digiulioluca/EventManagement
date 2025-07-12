@@ -24,6 +24,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void delete(String uuid){
+        /* qui possiamo anche eliminare riga 29 e sostituire con:
+        * reservationRepository.delete(reservationRepository.findByUuid(uuid).orElseThrow(ReservationNotFoundException::new)) */
         Reservation reservation = reservationRepository.findByUuid(uuid).orElseThrow(ReservationNotFoundException::new);
         reservationRepository.deleteById(reservation.getId());
     }
