@@ -1,6 +1,7 @@
 package it.profice.project.event_service.service;
 
 import it.profice.project.event_service.dto.EventDTO;
+import it.profice.project.event_service.dto.EventRequestDTO;
 import it.profice.project.event_service.exception.EventNotFoundException;
 import it.profice.project.event_service.model.Event;
 import it.profice.project.event_service.repository.EventRepository;
@@ -82,8 +83,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDTO> searchEvents(EventDTO event) {
-        return List.of();
+    public List<EventDTO> searchEvents(EventRequestDTO request) {
+        return eventRepository.searchEvents(
+                request.getTitle(),
+                request.getDateFrom(),
+                request.getDateTo(),
+                request.getLocation(),
+                request.getCategory()
+        ).stream().map(this::modelToDto).toList();
     }
 
     private EventDTO modelToDto(Event event) {
