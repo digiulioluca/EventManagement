@@ -2,6 +2,7 @@ package it.profice.project.event_service.controller;
 
 import it.profice.project.event_service.dto.EventDTO;
 import it.profice.project.event_service.service.EventService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,19 +32,19 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EventDTO save(@RequestBody EventDTO newEvent) {
+    public EventDTO save(@Valid @RequestBody EventDTO newEvent) {
         return eventService.save(newEvent);
     }
 
     @PutMapping("/{uuid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public EventDTO update(@PathVariable String uuid, @RequestBody EventDTO event) {
+    public EventDTO update(@Valid @PathVariable String uuid, @RequestBody EventDTO event) {
         return eventService.update(uuid, event);
     }
 
     @PatchMapping("/{uuid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public EventDTO partialUpdate(@PathVariable String uuid, @RequestBody EventDTO event) {
+    public EventDTO partialUpdate(@Valid @PathVariable String uuid, @RequestBody EventDTO event) {
         return eventService.partialUpdate(uuid, event);
     }
 
