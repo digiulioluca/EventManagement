@@ -18,11 +18,6 @@ public class UserController {
         return userService.findByUuid(uuid);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO save(@RequestBody UserDTO user) {
-        return userService.save(user);
-    }
 
     @PutMapping("/{uuid}")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -40,11 +35,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String uuid) {
         userService.delete(uuid);
-    }
-
-    @GetMapping("/email/{email}")
-    public UserDTO getByEmail(@PathVariable String email) {
-        return userService.findByEmail(email);
     }
 
 }

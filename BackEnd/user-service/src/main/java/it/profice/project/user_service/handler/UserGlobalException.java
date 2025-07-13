@@ -1,5 +1,6 @@
 package it.profice.project.user_service.handler;
 
+import it.profice.project.user_service.exception.LoginUnauthorizedException;
 import it.profice.project.user_service.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,14 @@ public class UserGlobalException {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handlerBookNotFoundException(UserNotFoundException e) {
-        Map<String, Object> ret = getRet("404", e.getMessage());
+    public ResponseEntity<Map<String, Object>> handlerUserNotFoundException(UserNotFoundException e) {
+        Map<String, Object> ret = getRet("404", "User non trovato");
         return new ResponseEntity<>(ret, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(LoginUnauthorizedException.class)
+    public ResponseEntity<Map<String, Object>> handlerLoginUnauthorizedException(RuntimeException e){
+        return new ResponseEntity<>(getRet("401", "Username o password errati"), HttpStatus.UNAUTHORIZED);
     }
 
     private Map<String, Object> getRet(String errorCode, String errorMessage){
