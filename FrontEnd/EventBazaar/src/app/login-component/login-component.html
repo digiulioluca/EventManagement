@@ -1,1 +1,15 @@
-<p>login-component works!</p>
+<h2>Accedi</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+  <label>
+    Email:
+    <input type="email" formControlName="email" />
+  </label><br/>
+
+  <label>
+    Password:
+    <input type="password" formControlName="password" />
+  </label><br/>
+
+  <button type="submit" [disabled]="form.invalid">Accedi</button>
+</form>

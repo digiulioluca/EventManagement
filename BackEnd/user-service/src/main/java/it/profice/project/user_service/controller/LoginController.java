@@ -17,7 +17,7 @@ public class LoginController {
 
     private LoginService loginService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseDTO login(@RequestBody @Valid RequestDTO request) {
         return loginService.login(request);
     }
