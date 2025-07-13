@@ -1,6 +1,7 @@
 package it.profice.project.event_service.controller;
 
 import it.profice.project.event_service.dto.EventDTO;
+import it.profice.project.event_service.dto.EventRequestDTO;
 import it.profice.project.event_service.service.EventService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,11 @@ public class EventController {
     @GetMapping
     public List<EventDTO> findAll() {
         return eventService.findAll();
+    }
+
+    @GetMapping("/search")
+    public List<EventDTO> findAll(@RequestBody EventRequestDTO request) {
+        return eventService.searchEvents(request);
     }
 
     @GetMapping("/{uuid}")
