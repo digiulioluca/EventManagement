@@ -27,7 +27,6 @@ public class EventDTO {
     @NotEmpty
     private String description;
     @NotNull
-    @NotEmpty
     private Date date;
     @NotNull
     @NotEmpty

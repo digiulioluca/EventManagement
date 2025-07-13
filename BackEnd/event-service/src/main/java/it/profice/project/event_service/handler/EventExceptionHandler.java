@@ -3,13 +3,16 @@ package it.profice.project.event_service.handler;
 import it.profice.project.event_service.exception.EventNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+@RestControllerAdvice
 public class EventExceptionHandler {
     private static Map<String, Object> getRet(String errorCode, String errorMessage) {
         Map<String, Object> ret = new HashMap<>();
@@ -22,7 +25,15 @@ public class EventExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e){
-        return new ResponseEntity<>(getRet("400", "si è presentato un errore di tipo MethodArgumentNotValidException"), HttpStatus.BAD_REQUEST);
+        Map<String, String> fieldErrors = new HashMap<>();
+        for (FieldError error : e.getBindingResult().getFieldErrors()) {
+            fieldErrors.put(error.getField(), error.getDefaultMessage());
+        }
+
+        Map<String, Object> body = getRet("400", "Errore di validazione");
+        body.put("errors", fieldErrors);
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EventNotFoundException.class)
