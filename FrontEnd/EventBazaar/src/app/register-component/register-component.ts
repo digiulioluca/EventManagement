@@ -21,15 +21,14 @@ export class RegisterComponent {
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      role: ['USER'],
+      password: ['', Validators.required]
     });
   }
 
   submit() {
     if (this.form.invalid) return;
 
-    this.http.post('http://localhost:8081/api/v1/auth"', this.form.value)
+    this.http.post('http://localhost:8080/api/v1/auth/register', this.form.value)
       .subscribe({
         next: () => {
           alert('Registrazione riuscita!');

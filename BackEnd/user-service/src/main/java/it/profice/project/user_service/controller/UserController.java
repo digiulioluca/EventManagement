@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")

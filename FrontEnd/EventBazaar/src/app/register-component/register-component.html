@@ -16,13 +16,5 @@
     <input type="password" formControlName="password" />
   </label><br/>
 
-  <label>
-    Ruolo:
-    <select formControlName="role">
-      <option value="USER">Utente</option>
-      <option value="ADMIN">Admin</option>
-    </select>
-  </label><br/>
-
   <button type="submit" [disabled]="form.invalid">Registrati</button>
 </form>
