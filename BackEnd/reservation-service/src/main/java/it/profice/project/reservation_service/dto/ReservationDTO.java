@@ -20,5 +20,6 @@ public class ReservationDTO {
     private String eventUuid;
     @NotNull
     private LocalDate date;
+    private String eventTitle;
 
 }
