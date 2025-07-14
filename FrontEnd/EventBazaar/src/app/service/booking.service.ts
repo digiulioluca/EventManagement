@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface ReservationDTO {
-  uuid: string;
-  userUuid: string;
-  eventUuid: string;
-  date: string;
+  eventLocation: string;
+  eventTitle: string;
+  eventDate: string;
+  date: Date;
 }
 
 @Injectable({

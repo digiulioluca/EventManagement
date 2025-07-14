@@ -14,8 +14,9 @@
   <!-- Lista prenotazioni -->
   <ul *ngIf="!isLoading && !errorMessage && reservations.length > 0" class="reservation-list">
     <li *ngFor="let reservation of reservations" class="reservation-item">
-      <strong>UUID:</strong> {{ reservation.uuid }}<br />
-      <strong>Evento UUID:</strong> {{ reservation.eventUuid }}<br />
+      <strong>eventLocation:</strong> {{ reservation.eventLocation }}<br />
+      <strong>eventTitle:</strong> {{ reservation.eventTitle }}<br />
+      <strong>eventDate:</strong> {{ reservation.eventTitle }}<br />
       <strong>Data:</strong> {{ reservation.date | date:'dd/MM/yyyy' }}
     </li>
   </ul>
