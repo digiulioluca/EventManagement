@@ -8,7 +8,5 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'reservations', component: BookingComponent },
-  { path: '**', redirectTo: 'login' },
   { path: 'events', component: EventComponent},
-  { path: '**', redirectTo: 'login' }
 ];
