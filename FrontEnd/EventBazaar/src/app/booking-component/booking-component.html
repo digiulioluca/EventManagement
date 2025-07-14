@@ -1,17 +1,14 @@
 <div class="booking-container">
   <h2>Le tue prenotazioni</h2>
 
-  <!-- Loading -->
   <div *ngIf="isLoading" class="loading">
     Caricamento prenotazioni...
   </div>
 
-  <!-- Error message -->
   <div *ngIf="errorMessage" class="error">
     {{ errorMessage }}
   </div>
 
-  <!-- Lista prenotazioni -->
   <ul *ngIf="!isLoading && !errorMessage && reservations.length > 0" class="reservation-list">
     <li *ngFor="let reservation of reservations" class="reservation-item">
       <strong>eventLocation:</strong> {{ reservation.eventLocation }}<br />
@@ -21,7 +18,6 @@
     </li>
   </ul>
 
-  <!-- Nessuna prenotazione -->
   <div *ngIf="!isLoading && !errorMessage && reservations.length === 0">
     Nessuna prenotazione trovata.
   </div>
