@@ -1,36 +1,54 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">Eventi</a>
+  <div class="container-fluid py-3">
+    <img src="assets/EventBazaar3.png" alt="Logo Eventi" class="me-2" style="height: 50px;" />
+    <a class="navbar-brand text-white" routerLink="/">Eventi</a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ms-auto">
 
         <li class="nav-item">
-          <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/events" routerLinkActive="active">Eventi</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/reservations" routerLinkActive="active">Prenotazioni</a>
+          <a class="nav-link text-white" routerLink="/" routerLinkActive="active">Home</a>
         </li>
 
-        <li class="nav-item" *ngIf="!isLoggedIn">
-          <a class="nav-link" routerLink="/login" routerLinkActive="active">Accedi</a>
-        </li>
-        <li class="nav-item" *ngIf="!isLoggedIn">
-          <a class="nav-link" routerLink="/register" routerLinkActive="active">Registrati</a>
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="/events" routerLinkActive="active">Eventi</a>
         </li>
 
-        <li class="nav-item" *ngIf="isLoggedIn">
-          <a class="nav-link" routerLink="/profile" routerLinkActive="active">Profilo</a>
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="/reservations" routerLinkActive="active">Prenotazioni</a>
         </li>
-        <li class="nav-item" *ngIf="isLoggedIn">
-          <a class="nav-link" (click)="logout()">Logout</a>
+
+        <li class="nav-item" *ngIf="userRole === 'ADMIN'">
+          <a class="nav-link text-warning" routerLink="/admin" routerLinkActive="active">Portale Admin</a>
         </li>
+
+        <li class="nav-item" *ngIf="isLoggedIn && userRole !== 'ADMIN'">
+          <a class="nav-link text-warning" routerLink="/user" routerLinkActive="active">Area Utente</a>
+        </li>
+
+        <ng-container *ngIf="!isLoggedIn">
+          <li class="nav-item">
+            <a class="nav-link text-white" routerLink="/login" routerLinkActive="active">Accedi</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" routerLink="/register" routerLinkActive="active">Registrati</a>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <li class="nav-item">
+            <span class="nav-link text-white">Benvenuto {{ userName }}!</span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" style="cursor: pointer" (click)="logout()">Logout</a>
+          </li>
+        </ng-container>
+
       </ul>
     </div>
   </div>
