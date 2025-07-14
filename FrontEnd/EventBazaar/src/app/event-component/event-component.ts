@@ -51,6 +51,6 @@ export class EventComponent implements OnInit {
   }
 
   onEventSelected(event: EventDTO) {
-    this.router.navigate([`/${event.uuid}`]);
+    this.router.navigate([`events/${event.uuid}`]);
   }
 }

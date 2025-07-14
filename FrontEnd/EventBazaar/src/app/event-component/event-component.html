@@ -2,25 +2,22 @@
   <h2>Eventi</h2>
 
   <!-- Loading -->
-  <div *ngIf="isLoading">
-    Caricamento eventi...
-  </div>
-
-  <!-- Error message -->
-  <div *ngIf="errorMessage">
+  @if (isLoading) {
+  <div>Caricamento eventi...</div>
+  } @else if (errorMessage) {
+  <div>
     {{ errorMessage }}
   </div>
-
-  <!-- Lista prenotazioni -->
-  <<ul *ngIf="!isLoading && !errorMessage && events.length > 0">
-        <li *ngFor="let item of events;" >
-            {{item.title}}
-            <button (click)="onEventSelected(item)" class="btn-link">Dettagli</button>
-        </li>
-    </ul>
-
-  <!-- Nessuna prenotazione -->
-  <div *ngIf="!isLoading && !errorMessage && events.length === 0">
+  } @else if (!isLoading && !errorMessage && events.length > 0) {
+  <ul>
+    <li *ngFor="let item of events">
+      {{ item.title }}
+      <button (click)="onEventSelected(item)" class="btn-link">Dettagli</button>
+    </li>
+  </ul>
+  } @else if (!isLoading && !errorMessage && events.length === 0) {
+  <div>
     Nessun evento trovato.
   </div>
+  }
 </div>
