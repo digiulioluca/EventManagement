@@ -1,1 +1,10 @@
-<p>event-component works!</p>
+<div>
+    <ul *ngIf="events.length > 0; else noEvents">
+        <li *ngFor="let item of events; trackBy: trackByEventId" (click)="onEventSelected(item)">
+            {{item.title}}
+        </li>
+    </ul>
+    <ng-template #noEvents>
+        <p>Nessun evento trovato</p>
+    </ng-template>
+</div>

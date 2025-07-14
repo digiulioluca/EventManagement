@@ -37,7 +37,7 @@ export class LoginComponent {
         next: (res) => {
           localStorage.setItem('token', res.token);
           alert('Accesso riuscito!');
-          this.router.navigate(['/']);
+          this.router.navigate(['/events']);
         },
         error: (err) => {
           alert('Errore: ' + (err.error?.message || 'Credenziali non valide'));
