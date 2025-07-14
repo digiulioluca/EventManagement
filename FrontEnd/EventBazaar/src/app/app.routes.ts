@@ -4,11 +4,16 @@ import { LoginComponent } from './login-component/login-component';
 import { BookingComponent } from './booking-component/booking-component';
 import { EventComponent } from './event-component/event-component';
 import { UserComponent } from './user-component/user-component';
+import { AdminComponent } from './admin-component/admin-component';
+import { HomeComponent } from './home-component/home-component';
 
 export const routes: Routes = [
+  { path: '', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'reservations', component: BookingComponent },
   { path: 'events', component: EventComponent},
-  { path: 'user', component: UserComponent}
+  { path: 'admin', component: AdminComponent },
+  { path: 'user', component: UserComponent },
+
 ];
