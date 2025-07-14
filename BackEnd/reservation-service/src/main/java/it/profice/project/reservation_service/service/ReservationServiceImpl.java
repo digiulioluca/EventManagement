@@ -1,16 +1,13 @@
 package it.profice.project.reservation_service.service;
 
-import it.profice.project.event_service.dto.EventDTO;
 import it.profice.project.reservation_service.dto.ReservationDTO;
 import it.profice.project.reservation_service.model.Reservation;
 import it.profice.project.reservation_service.repository.ReservationRepository;
 import it.profice.project.reservation_service.exception.ReservationNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,13 +16,11 @@ import java.util.UUID;
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final WebClient.Builder webClientBuilder;
-
 
     @Override
     public ReservationDTO save(ReservationDTO reservation){
-       reservation.setUuid(UUID.randomUUID().toString());
-       reservation.setDate(LocalDate.now());
+        reservation.setUuid(UUID.randomUUID().toString());
+        reservation.setDate(LocalDate.now());
         return modelToDto(reservationRepository.save(dtoToModel(reservation)));
     }
 
@@ -52,35 +47,11 @@ public class ReservationServiceImpl implements ReservationService {
                 .toList();
     }
     private ReservationDTO modelToDto(Reservation reservation){
-        String eventTitle = webClientBuilder.build()
-                .get()
-                .uri("http://event-service/api/v1/events/{uuid}", reservation.getEventUuid())
-                .retrieve()
-                .bodyToMono(EventDTO.class)
-                .map(EventDTO::getTitle) // Assumendo che EventDTO abbia un metodo getTitle()
-                .block();
-
-        String eventLocation = webClientBuilder.build()
-                .get()
-                .uri("http://event-service/api/v1/events/{uuid}", reservation.getEventUuid())
-                .retrieve()
-                .bodyToMono(EventDTO.class)
-                .map(EventDTO::getLocation) // Assumendo che EventDTO abbia un metodo getTitle()
-                .block();
-
-        Date eventDate = webClientBuilder.build()
-                .get()
-                .uri("http://event-service/api/v1/events/{uuid}", reservation.getEventUuid())
-                .retrieve()
-                .bodyToMono(EventDTO.class)
-                .map(EventDTO::getDate) // Assumendo che EventDTO abbia un metodo getTitle()
-                .block();
-
         return ReservationDTO.builder()
+                .uuid(reservation.getUuid())
+                .userUuid(reservation.getUserUuid())
+                .eventUuid(reservation.getEventUuid())
                 .date(reservation.getDate())
-                .eventTitle(eventTitle)
-                .eventLocation(eventLocation)
-                .eventDate(eventDate)
                 .build();
     }
 
