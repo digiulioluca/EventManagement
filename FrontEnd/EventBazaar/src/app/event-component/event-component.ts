@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import { Event } from '../model/event';
+import { EventDTO, EventService } from '../service/event.service';
+import { catchError, tap } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+
 
 @Component({
   selector: 'app-event-component',
@@ -11,39 +13,44 @@ import { Event } from '../model/event';
   templateUrl: './event-component.html',
   styleUrl: './event-component.css'
 })
-export class EventComponent {
+export class EventComponent implements OnInit {
   
-  events: Event[] = [];
-  private http = inject(HttpClient);
+  events: EventDTO[] = [];
+  isLoading = true;
+  errorMessage = '';
   private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
   
-  constructor() {
-    afterNextRender(() => {
-      this.showAll();
-    });
+  constructor(private eventService: EventService) {
+    
+  }
+
+  ngOnInit(): void {
+    this.showAll();
   }
 
 
   showAll(): void {
-    this.http.get<Event[]>('http://localhost:8080/api/v1/events')
-      .subscribe({
-        next: (res) => {
-          this.events = [...res];
-          console.log('Events loaded:', this.events);
-          this.cdr.markForCheck();
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+    this.eventService.findAll().pipe(
+            tap(data => console.log('Dati ricevuti dal backend:', data)),
+            catchError(err => {
+              console.error('Errore durante la chiamata:', err);
+              this.errorMessage = 'Errore nel recupero degli eventi.';
+              this.isLoading = false;
+              return EMPTY;
+            })
+          ).subscribe({
+            next: (data) => {
+              this.events = data;
+              this.isLoading = false;
+            }
+          });
   }
 
-  trackByEventId(index: number, event: Event): string {
-    return event.uuid;
+  eventSearch(): void {
+    
   }
 
-  onEventSelected(event: Event) {
+  onEventSelected(event: EventDTO) {
     this.router.navigate([`/${event.uuid}`]);
   }
 }

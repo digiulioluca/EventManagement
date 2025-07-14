@@ -1,10 +1,26 @@
 <div>
-    <ul *ngIf="events.length > 0; else noEvents">
-        <li *ngFor="let item of events; trackBy: trackByEventId" (click)="onEventSelected(item)">
+  <h2>Eventi</h2>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading">
+    Caricamento eventi...
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Lista prenotazioni -->
+  <<ul *ngIf="!isLoading && !errorMessage && events.length > 0">
+        <li *ngFor="let item of events;" >
             {{item.title}}
+            <button (click)="onEventSelected(item)" class="btn-link">Dettagli</button>
         </li>
     </ul>
-    <ng-template #noEvents>
-        <p>Nessun evento trovato</p>
-    </ng-template>
+
+  <!-- Nessuna prenotazione -->
+  <div *ngIf="!isLoading && !errorMessage && events.length === 0">
+    Nessun evento trovato.
+  </div>
 </div>
