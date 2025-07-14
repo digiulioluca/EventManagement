@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { UserDTO } from '../module/UserDto';
+
 
 @Component({
   selector: 'app-register',
@@ -12,7 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./register-component.css'],
 })
 export class RegisterComponent {
-  form;
+  form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -29,13 +31,16 @@ export class RegisterComponent {
   submit() {
     if (this.form.invalid) return;
 
-    this.http.post('http://localhost:8080/api/v1/auth/register', this.form.value)
+    this.http.post<UserDTO>('http://localhost:8080/api/v1/auth/register', this.form.value)
       .subscribe({
-        next: () => {
-          alert('Registrazione riuscita!');
-          this.router.navigate(['/login']);
+        next: (res) => {
+          localStorage.setItem('userUuid', res.uuid);
+          alert('Registrazione avvenuta con successo!');
+          this.router.navigate(['/']);
         },
-        error: err => alert('Errore: ' + err.error.message),
+        error: (err) => {
+          alert('Errore nella registrazione: ' + (err.error?.message || ''));
+        }
       });
   }
 }
