@@ -86,8 +86,7 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(UserNotFoundException::new);
         userRepository.deleteById(userToDelete.getId());
     }
-
-
+    
     private UserDTO modelToDto(User user) {
         return UserDTO.builder()
                 .uuid(user.getUuid())
