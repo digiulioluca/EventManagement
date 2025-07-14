@@ -21,8 +21,8 @@ public class EventController {
         return eventService.findAll();
     }
 
-    @GetMapping("/search")
-    public List<EventDTO> findAll(@RequestBody EventRequestDTO request) {
+    @PostMapping("/search")
+    public List<EventDTO> searchEvents(@RequestBody EventRequestDTO request) {
         return eventService.searchEvents(request);
     }
 

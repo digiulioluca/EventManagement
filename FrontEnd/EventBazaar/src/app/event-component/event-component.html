@@ -1,23 +1,56 @@
-<div>
-  <h2>Eventi</h2>
+<div class="container-fluid event-form d-flex p-2 m-2 flex-column justify-content-center align-items-center">
+  <h2 class="text-center">Cerca Eventi</h2>
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="styled-form">
+    <div class="container form-group d-flex p-2 justify-content-between">
+      <label for="title">Titolo</label>
+      <input type="text" id="title" formControlName="title" />
+    </div>
 
-  <!-- Loading -->
-  @if (isLoading) {
-  <div>Caricamento eventi...</div>
-  } @else if (errorMessage) {
-  <div>
-    {{ errorMessage }}
-  </div>
-  } @else if (!isLoading && !errorMessage && events.length > 0) {
-  <ul>
-    <li *ngFor="let item of events">
-      {{ item.title }}
-      <button (click)="onEventSelected(item)" class="btn-link">Dettagli</button>
-    </li>
-  </ul>
-  } @else if (!isLoading && !errorMessage && events.length === 0) {
-  <div>
-    Nessun evento trovato.
+    <div class="container form-group d-flex p-2 align-items-center justify-content-around">
+      <label for="dateFrom">Data Inizio</label>
+      <input type="date" id="dateFrom" formControlName="dateFrom" />
+    </div>
+
+    <div class="container form-group d-flex p-2 align-items-center justify-content-around">
+      <label for="dateTo">Data Fine</label>
+      <input type="date" id="dateTo" formControlName="dateTo" />
+    </div>
+
+    <div class="container form-group d-flex p-2 align-items-center justify-content-around">
+      <label for="location">Luogo</label>
+      <input type="text" id="location" formControlName="location" />
+    </div>
+
+    <div class="container form-group d-flex p-2 align-items-center justify-content-around">
+      <label for="category">Categoria evento</label>
+      <select formControlName="category">
+        @for (option of categoryOptions; track option) {
+        <option 
+          [disabled]="option === 'EMPTY'" 
+          [value]="option">
+          {{ option }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <button [disabled]="isButtonDisabled()" class="submit-button">Cerca</button>
+  </form>
+</div>
+
+@if (searchExecuted && events.length === 0) {
+<div class="no-results">
+  <p>Nessun evento trovato.</p>
+</div>
+} @if (events.length > 0) {
+<div class="event-results">
+  @for (ev of events; track ev.uuid) {
+  <div class="event-card" (click)="onSelectEvent(ev.uuid)">
+    <h3>{{ ev.title }}</h3>
+    <p><strong>Data:</strong> {{ ev.date }}</p>
+    <p><strong>Luogo:</strong> {{ ev.location }}</p>
+    <p><strong>Categoria:</strong> {{ ev.eventCategory }}</p>
   </div>
   }
 </div>
+}

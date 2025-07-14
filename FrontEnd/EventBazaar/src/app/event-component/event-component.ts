@@ -1,56 +1,60 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EventDTO, EventService } from '../service/event.service';
-import { catchError, tap } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
-
+import { EventCategory, EventDTO, EventService } from '../service/event.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-event-component',
-  standalone: true,
-  imports: [CommonModule],
+  selector: 'app-event',
   templateUrl: './event-component.html',
-  styleUrl: './event-component.css'
+  styleUrls: ['./event-component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule]
 })
 export class EventComponent implements OnInit {
-  
+  eventForm!: FormGroup;
   events: EventDTO[] = [];
-  isLoading = true;
-  errorMessage = '';
-  private router = inject(Router);
-  
-  constructor(private eventService: EventService) {
-    
-  }
+  searchExecuted = false;
+  categoryOptions = Object.values(EventCategory);
+
+  constructor(
+    private fb: FormBuilder,
+    private eventService: EventService,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
-    this.showAll();
+    console.log(this.categoryOptions);
+    this.eventForm = this.fb.group({
+      title: [''],
+      dateFrom: [''],
+      dateTo: [''],
+      location: [''],
+      category: ['']
+    });
   }
 
+  onSubmit(): void {
+    if (this.eventForm.valid) {
+      const form = this.eventForm.value;
 
-  showAll(): void {
-    this.eventService.findAll().pipe(
-            tap(data => console.log('Dati ricevuti dal backend:', data)),
-            catchError(err => {
-              console.error('Errore durante la chiamata:', err);
-              this.errorMessage = 'Errore nel recupero degli eventi.';
-              this.isLoading = false;
-              return EMPTY;
-            })
-          ).subscribe({
-            next: (data) => {
-              this.events = data;
-              this.isLoading = false;
-            }
-          });
+      this.eventService.searchEvents(form).subscribe({
+        next: (res) => {
+          this.events = res;
+          this.searchExecuted = true;
+        },
+        error: (err) => console.error('Errore nella ricerca eventi:', err)
+      });
+    }
   }
 
-  eventSearch(): void {
-    
+  onSelectEvent(eventUuid: string): void {
+    this.router.navigate(['/events', eventUuid]);
   }
 
-  onEventSelected(event: EventDTO) {
-    this.router.navigate([`events/${event.uuid}`]);
+  isButtonDisabled(): boolean {
+    const values = Object.values(this.eventForm.value);
+    return !values.some(val => val && val.toString().trim() !== '');
   }
 }
