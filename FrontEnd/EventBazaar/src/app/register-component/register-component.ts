@@ -33,7 +33,6 @@ export class RegisterComponent {
     this.http.post<UserDTO>('http://localhost:8080/api/v1/auth/register', this.form.value)
       .subscribe({
         next: (res) => {
-          localStorage.setItem('userUuid', res.uuid);
           alert('Registrazione avvenuta con successo!');
           this.router.navigate(['/']);
         },

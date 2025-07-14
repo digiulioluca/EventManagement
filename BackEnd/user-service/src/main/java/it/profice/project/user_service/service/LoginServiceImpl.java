@@ -46,7 +46,7 @@ public class LoginServiceImpl implements LoginService{
 
     private ResponseDTO modelToResponseDto(User user) {
         return ResponseDTO.builder()
-                .email(user.getEmail())
+                .uuid(user.getUuid())
                 .response("Login effettuato!")
                 .build();
     }
