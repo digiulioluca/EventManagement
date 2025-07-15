@@ -1,11 +1,14 @@
 <div class="homepage-container">
+  <!-- Titolo principale della home page -->
   <h1 class="title">Benvenuto su Eventi!</h1>
 
+  <!-- Introduzione alla piattaforma -->
   <p class="intro">
     Eventi è la tua piattaforma di riferimento per scoprire, gestire e partecipare ad eventi di ogni tipo.
     Che tu sia un semplice partecipante o un organizzatore, qui troverai tutto ciò che ti serve.
   </p>
 
+  <!-- Sezione con elenco delle funzionalità principali -->
   <div class="features">
     <h2>Cosa puoi fare:</h2>
     <ul>
@@ -16,6 +19,7 @@
     </ul>
   </div>
 
+  <!-- Sezione con informazioni su login e registrazione -->
   <div class="access-info">
     <h2>Accesso e Registrazione</h2>
     <p>
@@ -25,19 +29,31 @@
     </p>
   </div>
 
+  <!-- Sezione che mostra gli eventi disponibili, visibile solo se ci sono eventi -->
   <div class="event-preview" *ngIf="events.length > 0">
     <h2 class="preview-title">Eventi in evidenza</h2>
+
+    <!-- Ciclo sugli eventi per mostrare le informazioni in una card -->
     <div class="event-card" *ngFor="let item of events">
       <h3>{{ item.title }}</h3>
       <p><strong>Data:</strong> {{ item.date | date: 'dd-MM-yyyy' }}</p>
       <p><strong>Luogo:</strong> {{ item.location }}</p>
+
+      <!-- Pulsante per andare al dettaglio evento -->
       <button (click)="onEventSelected(item)" class="details-button">Dettagli</button>
+
+      <!-- Pulsante per prenotare l'evento -->
       <button (click)="onReservationButton(item.uuid)" class="details-button">Prenota</button>
     </div>
   </div>
 
+  <!-- Messaggio di caricamento eventi -->
   <div *ngIf="isLoading" class="loading">Caricamento eventi...</div>
+
+  <!-- Messaggio di errore in caso di problemi -->
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <!-- Messaggio se non ci sono eventi da mostrare -->
   <div *ngIf="!isLoading && !errorMessage && events.length === 0" class="no-events">
     Nessun evento trovato.
   </div>

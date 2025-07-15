@@ -1,28 +1,29 @@
 <div class="container">
-  @if(event) {
-  <h1>Dettagli dell'evento: {{ event.title }}</h1>
-  <section>
+  <!-- Mostra la sezione solo se l'evento è caricato -->
+  <section *ngIf="event">
+    <h1>Dettagli dell'evento: {{ event.title }}</h1>
+
     <div class="card-container">
       <div class="card">
         <div class="card-body">
+          <!-- Titolo evento -->
           <h3 class="card-title">{{ event.title }}</h3>
           <ul>
+            <!-- Descrizione evento -->
             <li><strong>Descrizione:</strong> {{ event.description }}</li>
-            <li>
-              <strong>Data:</strong> {{ event.date | date : "dd-MM-yyyy" }}
-            </li>
+            <!-- Data evento formattata -->
+            <li><strong>Data:</strong> {{ event.date | date : "dd-MM-yyyy" }}</li>
+            <!-- Luogo evento -->
             <li><strong>Location :</strong> {{ event.location }}</li>
+            <!-- Categoria evento -->
             <li><strong>Tipo evento: </strong> {{ event.eventCategory }}</li>
           </ul>
-          <button
-            (click)="onReservationButton(event.uuid)"
-            class="details-button"
-          >
+          <!-- Bottone per prenotare, passa l'UUID evento -->
+          <button (click)="onReservationButton(event.uuid)" class="details-button">
             Prenota
           </button>
         </div>
       </div>
     </div>
   </section>
-  }
 </div>

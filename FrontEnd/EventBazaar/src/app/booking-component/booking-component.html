@@ -1,24 +1,31 @@
 <div class="booking-container">
   <h2>Le tue prenotazioni</h2>
 
+  <!-- Mostra un messaggio di caricamento mentre le prenotazioni sono in fase di fetch -->
   <div *ngIf="isLoading" class="loading">
     Caricamento prenotazioni...
   </div>
 
+  <!-- Mostra un messaggio di errore se la chiamata al backend fallisce -->
   <div *ngIf="errorMessage" class="error">
     {{ errorMessage }}
   </div>
 
+  <!-- Lista delle prenotazioni, visibile solo se non si sta caricando, non c'è errore e ci sono prenotazioni -->
   <ul *ngIf="!isLoading && !errorMessage && reservations.length > 0" class="reservation-list">
     <li *ngFor="let reservation of reservations" class="reservation-item">
+      <!-- Dettagli della prenotazione ed evento associato -->
       <strong>Luogo dell'Evento:</strong> {{ reservation.eventLocation }}<br />
       <strong>Nome dell'Evento:</strong> {{ reservation.eventTitle }}<br />
       <strong>Data dell'Evento:</strong> {{ reservation.eventDate | date:'dd/MM/yyyy' }}<br />
       <strong>Data della Prenotazione:</strong> {{ reservation.date | date:'dd/MM/yyyy' }}
+
+      <!-- Pulsante per eliminare la prenotazione corrente -->
       <button (click)="removeReservation(reservation.uuid || '')">Elimina prenotazione</button>
     </li>
   </ul>
 
+  <!-- Messaggio mostrato se non ci sono prenotazioni da visualizzare -->
   <div *ngIf="!isLoading && !errorMessage && reservations.length === 0">
     Nessuna prenotazione trovata.
   </div>

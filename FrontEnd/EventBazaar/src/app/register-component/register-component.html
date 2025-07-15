@@ -1,20 +1,27 @@
+<!-- Titolo della pagina di registrazione -->
 <h2>Registrati</h2>
 
+<!-- Form Angular reattivo, legato all'oggetto 'form' nel componente TS -->
 <form [formGroup]="form" (ngSubmit)="submit()">
+
+  <!-- Campo input per il nome utente, collegato al formControl 'name' -->
   <label>
     Nome:
     <input type="text" formControlName="name" />
   </label><br/>
 
+  <!-- Campo input per l'email, con validazione incorporata via formControl 'email' -->
   <label>
     Email:
     <input type="email" formControlName="email" />
   </label><br/>
 
+  <!-- Campo input per la password, collegato al formControl 'password' -->
   <label>
     Password:
     <input type="password" formControlName="password" />
   </label><br/>
 
+  <!-- Bottone di submit, disabilitato se il form non è valido -->
   <button type="submit" [disabled]="form.invalid">Registrati</button>
 </form>
