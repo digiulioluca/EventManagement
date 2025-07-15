@@ -17,6 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDTO {
 
+    // DTO "base" per la gestione dei metodi GET, POST, PUT e PATCH
+
     private String uuid;
     @NotBlank
     private String name;

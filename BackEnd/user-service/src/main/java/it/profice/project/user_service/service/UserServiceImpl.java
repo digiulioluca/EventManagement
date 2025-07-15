@@ -19,9 +19,23 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService{
 
+    /**
+     * Injection di UserRepository e WebClient.Builder
+     */
     private final UserRepository userRepository;
     private final WebClient.Builder webClientBuilder;
 
+    /**
+     * La ricerca del singolo utente si suddivide in tre fasi:
+     * - ricerca tramite il metodo findByUuid
+     * - istanza di un oggetto UserDTO
+     * - modifica dell'attributo reservations per l'utente o
+     * events per l'admin tramite l'utilizzo del webClientBuilder
+     *
+     * @param uuid dell'utente da ricercare
+     *
+     * @return UserDTO
+     */
     @Override
     public UserDTO findByUuid(String uuid) {
         User user = userRepository.findByUuid(uuid)
@@ -54,6 +68,14 @@ public class UserServiceImpl implements UserService{
         return ret;
     }
 
+    /**
+     * Metodo per aggiornare tutti i campi dell'utente
+     *
+     * @param uuid dell'utente
+     * @param user json con tutti i campi
+     *
+     * @return
+     */
     @Override
     public UserDTO update(String uuid, UserDTO user) {
         User userToUpdate = userRepository.findByUuid(uuid)

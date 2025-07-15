@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDTO {
+
+    /* DTO di risposta per il login.
+    L'uuid diventerà un parametro del LocalStorage*/
+
     private String uuid;
     private String response;
 }
