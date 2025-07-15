@@ -2,26 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EventCategory, EventDTO, EventService } from '../service/event.service';
-import { HttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import { BookingService, RequestDTO } from '../service/booking.service';
 
 @Component({
   selector: 'app-event',
   templateUrl: './event-component.html',
   styleUrls: ['./event-component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule]
+  imports: [ReactiveFormsModule, DatePipe]
 })
 export class EventComponent implements OnInit {
   eventForm!: FormGroup;
   events: EventDTO[] = [];
   searchExecuted = false;
   categoryOptions = Object.values(EventCategory);
+  request: RequestDTO = {};
 
   constructor(
     private fb: FormBuilder,
     private eventService: EventService,
     private router: Router,
-    private http: HttpClient
+    private bookingService: BookingService
   ) {}
 
   ngOnInit(): void {
@@ -65,5 +67,30 @@ export class EventComponent implements OnInit {
 
   onSelectEvent(eventUuid: string): void {
     this.router.navigate(['/events', eventUuid]);
+  }
+
+  onReservationButton(eventSelectedUuid: string): void {
+    if (this.isLoggedIn) {
+      this.request = {
+        eventUuid: eventSelectedUuid,
+        userUuid: localStorage.getItem('uuid') || ''
+      };
+
+      this.bookingService.save(this.request).subscribe({
+        next: () => {
+          alert('Prenotazione avvenuta con successo!');
+          this.router.navigate(['reservations']);
+        },
+        error: (err) => {
+          alert('Errore nella prenotazione: ' + (err.error?.message || ''));
+        }
+      });
+    } else {
+      alert("Esegui il log in per prenotarti all'evento");
+    }
+  }
+
+   get isLoggedIn(): boolean {
+    return localStorage.getItem('uuid') !== null;
   }
 }

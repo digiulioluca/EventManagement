@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { EventDTO, EventService } from '../service/event.service';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BookingService, RequestDTO } from '../service/booking.service';
 
 @Component({
   selector: 'app-event-details-component',
@@ -13,11 +14,13 @@ export class EventDetailsComponent implements OnInit {
 
   eventUuid!: string | null;
   event!: EventDTO | null;
-
+  request: RequestDTO = {};
   private route = inject(ActivatedRoute);
 
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService,
+    private bookingService: BookingService,
+    private router: Router) {
 
   }
 
@@ -37,5 +40,30 @@ export class EventDetailsComponent implements OnInit {
       next: event => { this.event = event; },
       error: () => { alert("Errore nel caricamento dell'evento"); }
     });
+  }
+
+   onReservationButton(eventSelectedUuid: string): void {
+    if (this.isLoggedIn) {
+      this.request = {
+        eventUuid: eventSelectedUuid,
+        userUuid: localStorage.getItem('uuid') || ''
+      };
+
+      this.bookingService.save(this.request).subscribe({
+        next: () => {
+          alert('Prenotazione avvenuta con successo!');
+          this.router.navigate(['reservations']);
+        },
+        error: (err) => {
+          alert('Errore nella prenotazione: ' + (err.error?.message || ''));
+        }
+      });
+    } else {
+      alert("Esegui il log in per prenotarti all'evento");
+    }
+  }
+
+   get isLoggedIn(): boolean {
+    return localStorage.getItem('uuid') !== null;
   }
 }

@@ -15,17 +15,17 @@ export class NavbarComponent implements OnInit {
   userName: string | null = null;
   userRole: string | null = null;
 
-get isLoggedIn(): boolean {
-  return !!localStorage.getItem('uuid');
-}
+  get isLoggedIn(): boolean {
+    return !!localStorage.getItem('uuid');
+  }
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
     const uuid = localStorage.getItem('uuid');
     if (uuid) {
-      this.http.get<UserDTO>(`/api/users/${uuid}`).subscribe({
+      this.http.get<UserDTO>(`http://localhost:8080/api/v1/users/${uuid}`).subscribe({
         next: (user) => {
           this.userName = user.name;
           this.userRole = user.role;
