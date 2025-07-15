@@ -29,7 +29,7 @@
     <h2 class="preview-title">Eventi in evidenza</h2>
     <div class="event-card" *ngFor="let item of events">
       <h3>{{ item.title }}</h3>
-      <p><strong>Data:</strong> {{ item.date }}</p>
+      <p><strong>Data:</strong> {{ item.date | date: 'dd-MM-yyyy' }}</p>
       <p><strong>Luogo:</strong> {{ item.location }}</p>
       <button (click)="onEventSelected(item)" class="details-button">Dettagli</button>
     </div>
