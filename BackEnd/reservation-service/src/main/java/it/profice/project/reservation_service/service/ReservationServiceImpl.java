@@ -75,6 +75,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 
         return ReservationDTO.builder()
+                .uuid(reservation.getUuid())
                 .date(reservation.getDate())
                 .eventTitle(event.getTitle())
                 .eventDate(event.getDate())

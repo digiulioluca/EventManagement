@@ -32,8 +32,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     );
 
     @Query(value = """
-    SELECT TOP 5 FROM event
+    SELECT * FROM Event
     WHERE date BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY)
+    LIMIT 5
     """, nativeQuery = true)
     List<Event> findEventsNext7Days();
 }
