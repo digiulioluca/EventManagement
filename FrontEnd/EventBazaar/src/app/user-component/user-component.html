@@ -2,7 +2,7 @@
 
 <div *ngIf="!isLoading && user">
   <h2>Profilo Utente</h2>
-  
+
   <div *ngIf="!editMode">
     <p><strong>Nome:</strong> {{ user.name }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
@@ -21,9 +21,9 @@
       <input [(ngModel)]="editableUser.email" />
     </p>
     <p><strong>Ruolo:</strong> {{ user.role }}</p>
-    <button (click)="saveEdit()">Salva</button>
-    <button (click)="cancelEdit()">Annulla</button>
-    <button (click)="deleteProfile()">Cancella Profilo</button>
+<button class="primary" (click)="enableEdit()">Modifica</button>
+<button class="outline" (click)="cancelEdit()">Annulla</button>
+<button class="danger" (click)="deleteProfile()">Cancella Profilo</button>
   </div>
 </div>
 

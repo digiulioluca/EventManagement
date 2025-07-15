@@ -1,69 +1,43 @@
-<div
-  class="container py-5 text-center text-white"
-  style="background-color: #0c0b0b; min-height: 100vh"
->
-  <h1 class="display-4 mb-4" style="color: #fcc902">Benvenuto su Eventi!</h1>
+<div class="homepage-container">
+  <h1 class="title">Benvenuto su Eventi!</h1>
 
-  <p class="lead mb-5">
-    Eventi è la tua piattaforma di riferimento per scoprire, gestire e
-    partecipare ad eventi di ogni tipo. Che tu sia un semplice partecipante o un
-    organizzatore, qui troverai tutto ciò che ti serve.
+  <p class="intro">
+    Eventi è la tua piattaforma di riferimento per scoprire, gestire e partecipare ad eventi di ogni tipo.
+    Che tu sia un semplice partecipante o un organizzatore, qui troverai tutto ciò che ti serve.
   </p>
 
-  <div class="row text-start justify-content-center">
-    <div class="col-md-8">
-      <h3 style="color: #ac8905">🎉 Cosa puoi fare:</h3>
-      <ul class="list-unstyled fs-5 mt-3">
-        <li>
-          ✅ Esplora una vasta gamma di eventi disponibili nella sezione
-          <strong>Eventi</strong>.
-        </li>
-        <li>
-          ✅ Prenota facilmente il tuo posto e gestisci le tue
-          <strong>Prenotazioni</strong>.
-        </li>
-        <li>✅ Accedi al tuo profilo per aggiornare i tuoi dati personali.</li>
-        <li>
-          ✅ Se sei un amministratore, accedi al
-          <strong>Portale Admin</strong> per creare, modificare e cancellare
-          eventi.
-        </li>
-      </ul>
+  <div class="features">
+    <h2>Cosa puoi fare:</h2>
+    <ul>
+      <li>Esplora una vasta gamma di <strong>eventi</strong> disponibili nella sezione dedicata.</li>
+      <li>Prenota facilmente il tuo posto e gestisci le tue <strong>prenotazioni</strong>.</li>
+      <li>Aggiorna i tuoi dati personali nella sezione <strong>Profilo</strong>.</li>
+      <li>Se sei un amministratore, accedi al <strong>Portale Admin</strong> per gestire gli eventi.</li>
+    </ul>
+  </div>
 
-      <h3 class="mt-5" style="color: #ac8905">🔐 Accesso e Registrazione</h3>
-      <p>
-        Per utilizzare tutte le funzionalità, effettua l’<a
-          routerLink="/login"
-          class="text-warning"
-          >accesso</a
-        >
-        o <a routerLink="/register" class="text-warning">registrati</a> se
-        ancora non hai un account.
-      </p>
+  <div class="access-info">
+    <h2>Accesso e Registrazione</h2>
+    <p>
+      Per utilizzare tutte le funzionalità, effettua il
+      <a routerLink="/login" routerLinkActive="active" class="highlight-link">accedi</a> o
+      <a routerLink="/register" routerLinkActive="active" class="highlight-link">registrati</a> se non hai ancora un account.
+    </p>
+  </div>
+
+  <div class="event-preview" *ngIf="events.length > 0">
+    <h2 class="preview-title">Eventi in evidenza</h2>
+    <div class="event-card" *ngFor="let item of events">
+      <h3>{{ item.title }}</h3>
+      <p><strong>Data:</strong> {{ item.date }}</p>
+      <p><strong>Luogo:</strong> {{ item.location }}</p>
+      <button (click)="onEventSelected(item)" class="details-button">Dettagli</button>
     </div>
   </div>
 
-  <div>
-    <h2>Eventi</h2>
-
-    <!-- Loading -->
-    @if (isLoading) {
-    <div>Caricamento eventi...</div>
-    } @else if (errorMessage) {
-    <div>
-      {{ errorMessage }}
-    </div>
-    } @else if (!isLoading && !errorMessage && events.length > 0) {
-    <ul>
-      <li *ngFor="let item of events">
-        {{ item.title }}
-        <button (click)="onEventSelected(item)" class="btn-link">
-          Dettagli
-        </button>
-      </li>
-    </ul>
-    } @else if (!isLoading && !errorMessage && events.length === 0) {
-    <div>Nessun evento trovato.</div>
-    }
+  <div *ngIf="isLoading" class="loading">Caricamento eventi...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="!isLoading && !errorMessage && events.length === 0" class="no-events">
+    Nessun evento trovato.
   </div>
 </div>
