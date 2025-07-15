@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './user-component.html',
+  styleUrls: ['./user-component.css'],
 })
 
 export class UserComponent implements OnInit {
