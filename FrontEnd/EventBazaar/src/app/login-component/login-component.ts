@@ -27,13 +27,14 @@ export class LoginComponent {
 
   submit() {
     if (this.form.invalid) return;
-    
+
   this.http.post<{ uuid: string }>('http://localhost:8080/api/v1/auth/login', this.form.value)
     .subscribe({
       next: (res) => {
         localStorage.setItem('uuid', res.uuid);
         alert('Accesso riuscito!');
-        this.router.navigate(['/reservations']);
+        this.router.navigate(['/home']);
+        window.location.reload();
       },
         error: (err) => {
           alert('Errore: ' + (err.error?.message || 'Credenziali non valide'));
