@@ -25,7 +25,7 @@ get isLoggedIn(): boolean {
   ngOnInit() {
     const uuid = localStorage.getItem('uuid');
     if (uuid) {
-      this.http.get<UserDTO>(`/api/users/${uuid}`).subscribe({
+      this.http.get<UserDTO>(`http://localhost:8080/api/v1/users/${uuid}`).subscribe({
         next: (user) => {
           this.userName = user.name;
           this.userRole = user.role;
