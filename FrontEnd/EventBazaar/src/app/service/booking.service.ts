@@ -15,11 +15,15 @@ export interface ReservationDTO {
 export class BookingService {
   private apiUrl = 'http://localhost:8080/api/v1/reservations';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-getReservationsByUser(userUuid: string): Observable<ReservationDTO[]> {
-  const url = `${this.apiUrl}/${userUuid}/user`;
-  console.log('URL richiesta prenotazioni:', url);
-  return this.http.get<ReservationDTO[]>(url);
-}
+  getReservationsByUser(userUuid: string): Observable<ReservationDTO[]> {
+    const url = `${this.apiUrl}/${userUuid}/user`;
+    console.log('URL richiesta prenotazioni:', url);
+    return this.http.get<ReservationDTO[]>(url);
+  }
+
+  save(newReservation: ReservationDTO): Observable<ReservationDTO> {
+    return this.http.post<ReservationDTO>(`${this.apiUrl}`, newReservation);
+  }
 }
