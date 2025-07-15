@@ -63,4 +63,8 @@ export class EventService {
         this.http.delete(`${this.apiUrl}/${uuid}`);
     }
 
+    weeklyEvents(): Observable<EventDTO[]> {
+        this.url = this.apiUrl+'/weekly';
+        return this.http.get<EventDTO[]>(this.url);
+    }
 }

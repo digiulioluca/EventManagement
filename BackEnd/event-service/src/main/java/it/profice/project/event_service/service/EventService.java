@@ -14,4 +14,5 @@ public interface EventService {
     EventDTO partialUpdate(String uuid, EventDTO event);
     void delete (String uuid);
     List<EventDTO> searchEvents(EventRequestDTO event);
+    List<EventDTO> weeklyEvents();
 }
