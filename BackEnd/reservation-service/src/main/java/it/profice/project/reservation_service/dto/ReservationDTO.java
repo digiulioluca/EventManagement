@@ -16,7 +16,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class ReservationDTO {
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

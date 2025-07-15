@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface ReservationDTO {
-  eventLocation: string;
-  eventTitle: string;
-  eventDate: string;
-  date: Date;
+  uuid?: string;
+  eventLocation?: string;
+  eventTitle?: string;
+  eventDate?: string;
+  date?: Date;
 }
 
 export interface RequestDTO {
@@ -30,5 +31,9 @@ export class BookingService {
 
   save(newReservation: RequestDTO): Observable<ReservationDTO> {
     return this.http.post<ReservationDTO>(`${this.apiUrl}`, newReservation);
+  }
+
+  delete(uuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
   }
 }

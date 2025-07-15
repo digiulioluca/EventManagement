@@ -5,39 +5,39 @@
     <div *ngIf="!editMode && !addMode">
 
         <h2 *ngIf="!event ">{{ eventsState ? 'Eventi correnti' : 'Eventi conclusi' }}</h2>
- 
+
      <ul *ngIf="!event && events.length > 0; else noEvents">
          <ng-container *ngFor="let event of events">
              <li *ngIf="event.state === eventsState" (click)="selectEvent(event)" >
-             <strong>{{event.title}}</strong> 
+             <strong>{{event.title}}</strong>
              <br>
              {{event.location}}
              <br>
-             {{event.date}} 
+             {{event.date | date : 'dd/MM/yyyy'}}
             </li>
         </ng-container>
     </ul>
-    
+
     <p *ngIf="!event">
         <button (click)="eventsState = !eventsState"> {{ eventsState ? 'Eventi conclusi' : 'Indietro' }}</button>
         <button (click)="addEvent()">Aggiungi nuovo evento</button>
     </p>
-    
+
     <ng-template #noEvents>
         <p *ngIf="!editMode && !event">Nessun evento</p>
     </ng-template>
-    
+
     <div *ngIf="event">
         <h2>{{event.title}}</h2>
         <p><strong>Titolo:</strong> {{event.title}}</p>
         <p><strong>Descrizione:</strong> {{event.description}}</p>
-        <p><strong>Data:</strong> {{event.date}}</p>
+        <p><strong>Data:</strong> {{event.date | date : 'dd/MM/yyyy'}}</p>
         <p><strong>Location:</strong> {{event.location}}</p>
         <p><strong>Posti totali:</strong> {{event.totalSeats}}</p>
         <p><strong>Posti liberi:</strong> {{event.availableSeats}}</p>
         <p><strong>Stato:</strong> {{ event.state ? 'Da svolgersi' : 'Terminato' }}</p>
         <p><strong>Categoria:</strong> {{event.eventCategory}}</p>
-        
+
         <button *ngIf="event.state" (click)="enableEdit()">Modifica</button>
         <button (click)="deleteEvent()">Elimina</button>
             <button (click)="event = null">Annulla</button>
@@ -76,7 +76,7 @@
             <input type="checkbox" [(ngModel)]="editableEvent.state"> Cambia stato
         </p>
         <p>
-            <strong>Categoria:</strong> <select [(ngModel)]="editableEvent.eventCategory"> 
+            <strong>Categoria:</strong> <select [(ngModel)]="editableEvent.eventCategory">
             <option *ngFor="let cat of eventCategories" [value]="cat">{{cat}}</option></select>
         </p>
          <button (click)="saveEdit()">Salva</button>
@@ -102,7 +102,7 @@
             <strong>Posti totali:</strong> <input [(ngModel)]="newEvent.totalSeats" type="number">
         </p>
         <p>
-            <strong>Categoria:</strong> <select [(ngModel)]="newEvent.eventCategory"> 
+            <strong>Categoria:</strong> <select [(ngModel)]="newEvent.eventCategory">
             <option *ngFor="let cat of eventCategories" [value]="cat">{{cat}}</option></select>
         </p>
 
