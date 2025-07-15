@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-
+    // metodi personalizzati JPA
     Optional<Reservation> findByUuid(String uuid);
     List<Reservation> findByUserUuid(String userUuid);
     List<Reservation> findByEventUuid(String eventUuid);

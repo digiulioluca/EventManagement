@@ -14,6 +14,12 @@ import java.util.Map;
 @ControllerAdvice
 public class ReservationGlobalException {
 
+    /**
+     * Gestore delle eccezioni per ReservationNotFoundExcpetion
+     *
+     * @param e eccezione ReservationNotFoundException intercettata
+     * @return ResponseEntity<Map<String, Object>> risposta HTTP con status 404 e body JSON
+     */
     @ExceptionHandler(ReservationNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handlerReservationNotFoundException(ReservationNotFoundException e){
         Map<String, Object> ret = new HashMap<>();
@@ -23,6 +29,12 @@ public class ReservationGlobalException {
         return new ResponseEntity<>(ret, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Gestore delle eccezioni per handleValidationExcpetion
+     *
+     * @param e eccezione MethodArgumentNotValidException intercettata
+     * @return ResponseEntity<Map<String, Object>> risposta HTTP con status 400 e body JSON
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException e) {
         Map<String, Object> ret = new HashMap<>();

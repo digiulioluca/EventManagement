@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService{
 
     /**
      * La ricerca del singolo utente si suddivide in tre fasi:
-     * - ricerca tramite il metodo findByUuid
+     * - ricerca tramite il metodo findByUuid e istanza oggetto User
      * - istanza di un oggetto UserDTO
      * - modifica dell'attributo reservations per l'utente o
      * events per l'admin tramite l'utilizzo del webClientBuilder
@@ -69,12 +69,15 @@ public class UserServiceImpl implements UserService{
     }
 
     /**
-     * Metodo per aggiornare tutti i campi dell'utente
+     * Aggiornamento totale utente. Due fasi:
+     * - ricerca utente via uuid e istanza oggetto User
+     * - vengono richiamati tutti i setter dell'istanza user per
+     * assumere i campi ricevuti dal controller
      *
      * @param uuid dell'utente
      * @param user json con tutti i campi
      *
-     * @return
+     * @return UserDTO aggiornato
      */
     @Override
     public UserDTO update(String uuid, UserDTO user) {
@@ -89,6 +92,17 @@ public class UserServiceImpl implements UserService{
         return modelToDto(userRepository.save(userToUpdate));
     }
 
+    /**
+     * Aggiornamento parziale dell'utente. Differentemente dal metodo update,
+     * il partialUpdate opera attraverso un controllo prima dell'invocazione
+     * del metodo setter. Se il campo controllato è null, viene conservato
+     * il valore originale, ricavato dall'istanza di User
+     *
+     * @param uuid dell'utente
+     * @param user json con tutti i campi
+     *
+     * @return UserDTO aggiornato
+     */
     @Override
     public UserDTO partialUpdate(String uuid, UserDTO user) {
         User userToUpdate = userRepository.findByUuid(uuid)
@@ -102,6 +116,11 @@ public class UserServiceImpl implements UserService{
         return modelToDto(userRepository.save(userToUpdate));
     }
 
+    /**
+     * Cancellazione dell'utente.
+     *
+     * @param uuid dell'utente da eliminare
+     */
     @Override
     public void delete(String uuid) {
         User userToDelete = userRepository.findByUuid(uuid)
@@ -109,6 +128,12 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteById(userToDelete.getId());
     }
 
+    /**
+     * Conversione da User a UserDTO
+     *
+     * @param user object
+     * @return UserDTO -> uuid, name, email, password e role
+     */
     private UserDTO modelToDto(User user) {
         return UserDTO.builder()
                 .uuid(user.getUuid())
@@ -119,6 +144,12 @@ public class UserServiceImpl implements UserService{
                 .build();
     }
 
+    /**
+     * Conversione da UserDTO a User
+     *
+     * @param dto UserDTO object
+     * @return User -> uuid, name, email, password e role
+     */
     private User dtoToModel(UserDTO dto) {
         return User.builder()
                 .uuid(dto.getUuid())

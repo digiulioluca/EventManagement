@@ -19,9 +19,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
 
+    /**
+     * Injection di ReservationRepository e WebClient.Builder
+     */
     private final ReservationRepository reservationRepository;
     private final WebClient.Builder webClientBuilder;
 
+    /**
+     * Salvataggio di una nuova prenotazione. Dopo aver raccolto i dati dal controller,
+     * vengono impostati i valori dell'uuid (randomicamente) e della data (data attuale)
+     *
+     * @param reservation dto object
+     * @return ReservationDTO generato
+     */
     @Override
     public ReservationDTO save(ReservationDTO reservation){
         reservation.setUuid(UUID.randomUUID().toString());
@@ -29,6 +39,11 @@ public class ReservationServiceImpl implements ReservationService {
         return modelToDto(reservationRepository.save(dtoToModel(reservation)));
     }
 
+    /**
+     * Cancellazione della prenotazione.
+     *
+     * @param uuid della prenotazione da eliminare
+     */
     @Override
     public void delete(String uuid) {
         Reservation reservation = reservationRepository.findByUuid(uuid)
@@ -37,7 +52,12 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.deleteById(reservation.getId());
     }
 
-
+    /**
+     * Ricerca delle prenotazioni effettuate da un singolo utente.
+     *
+     * @param userUuid dell'utente da ricercare
+     * @return lista di prenotazioni effettuate
+     */
     public List<ReservationDTO> findByUserUuid(String userUuid){
         return reservationRepository.findByUserUuid(userUuid)
                 .stream()
@@ -45,6 +65,12 @@ public class ReservationServiceImpl implements ReservationService {
                 .toList();
     }
 
+    /**
+     * Ricerca delle prenotazioni effettuate per un singolo evento.
+     *
+     * @param eventUuid dell'evento da ricercare
+     * @return lista di prenotazioni effettuate
+     */
     public List<ReservationDTO> findByEventUuid(String eventUuid){
         return reservationRepository.findByEventUuid(eventUuid)
                 .stream()
@@ -52,6 +78,15 @@ public class ReservationServiceImpl implements ReservationService {
                 .toList();
     }
 
+    /**
+     * Conversione da Reservation a ReservationDTO. Prima di passare alla costruzione
+     * dell'oggetto attraverso il builder, viene richiamato il webClientBuilder per trovare
+     * l'evento da cui prelevare i campi per il DTO e per aggiornare il counter del campo
+     * availableSeats.
+     *
+     * @param reservation istanza dell'entità
+     * @return ReservationDTO -> uuid, data, e nome, location e data dell'evento
+     */
     private ReservationDTO modelToDto(Reservation reservation) {
         EventDTO event = webClientBuilder.build()
                 .get()
@@ -84,6 +119,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
 
+    /**
+     * Conversione da ReservationDTO a Reservation
+     *
+     * @param reservation dto
+     * @return istanza dell'entità
+     */
     private Reservation dtoToModel(ReservationDTO reservation){
         return Reservation.builder()
                 .uuid(reservation.getUuid())
