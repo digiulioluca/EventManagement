@@ -19,16 +19,18 @@ export class UserComponent implements OnInit {
   isLoading = true;
   editMode = false;
 
+   // Inietta UserService per chiamate HTTP e Router per reindirizzamenti
   constructor(private userService: UserService, private router: Router) {}
 
+   // All'inizializzazione del componente, recupera i dati utente tramite UUID da localStorage
   ngOnInit(): void {
     const uuid = localStorage.getItem('uuid');
-
+    // Se l'UUID non è presente, termina il caricamento senza chiamate
     if (!uuid) {
       this.isLoading = false;
       return;
     }
-
+  // Recupera i dati utente dal backend tramite il servizio
     this.userService.getUserByUuid(uuid).subscribe({
       next: (res) => {
         this.user = res;
@@ -41,7 +43,7 @@ export class UserComponent implements OnInit {
       }
     });
   }
-
+// Abilita la modalità di modifica e copia i dati utente in editableUser
   enableEdit(): void {
     this.editMode = true;
     if (this.user) {
@@ -54,7 +56,7 @@ export class UserComponent implements OnInit {
       };
     }
   }
-
+ // Annulla la modifica, ricaricando i dati originali dell'utente
   cancelEdit(): void {
     this.editMode = false;
     if (this.user) {
@@ -67,7 +69,7 @@ export class UserComponent implements OnInit {
         };
     }
   }
-
+// Salva le modifiche apportate all'utente chiamando l'update nel backend
   saveEdit(): void {
     if (!this.editableUser || !this.user) return;
 
@@ -81,7 +83,7 @@ export class UserComponent implements OnInit {
       }
     });
   }
-
+// Cancella il profilo dell'utente dopo conferma, e reindirizza al login
   deleteProfile(): void {
     if (!this.user) return;
 

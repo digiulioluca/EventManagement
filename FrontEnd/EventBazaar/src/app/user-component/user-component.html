@@ -1,16 +1,22 @@
+<!-- Mostra messaggio di caricamento finché i dati utente non sono stati caricati -->
 <div *ngIf="isLoading">Caricamento profilo</div>
 
+<!-- Mostra i dati utente solo se il caricamento è completato e l'utente è presente -->
 <div *ngIf="!isLoading && user">
   <h2>Profilo Utente</h2>
 
+  <!-- Modalità visualizzazione: mostra dati utente senza possibilità di modifica -->
   <div *ngIf="!editMode">
     <p><strong>Nome:</strong> {{ user.name }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>Ruolo:</strong> {{ user.role }}</p>
+
+    <!-- Pulsanti per modificare o cancellare il profilo -->
     <button (click)="enableEdit()">Modifica</button>
     <button (click)="deleteProfile()">Cancella Profilo</button>
   </div>
 
+  <!-- Modalità modifica: mostra form con input precompilati -->
   <div *ngIf="editMode && editableUser">
     <p>
       <strong>Nome:</strong>
@@ -20,13 +26,17 @@
       <strong>Email:</strong>
       <input [(ngModel)]="editableUser.email" />
     </p>
+    <!-- Ruolo non modificabile: solo visualizzazione -->
     <p><strong>Ruolo:</strong> {{ user.role }}</p>
-<button class="primary" (click)="saveEdit()">Salva</button>
-<button class="outline" (click)="cancelEdit()">Annulla</button>
-<button class="danger" (click)="deleteProfile()">Cancella Profilo</button>
+
+    <!-- Pulsanti per salvare, annullare modifiche o cancellare il profilo -->
+    <button class="primary" (click)="saveEdit()">Salva</button>
+    <button class="outline" (click)="cancelEdit()">Annulla</button>
+    <button class="danger" (click)="deleteProfile()">Cancella Profilo</button>
   </div>
 </div>
 
+<!-- Messaggio mostrato se l'utente non è stato trovato dopo il caricamento -->
 <div *ngIf="!isLoading && !user">
   <p>Utente non trovato</p>
 </div>
