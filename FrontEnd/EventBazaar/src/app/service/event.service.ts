@@ -62,5 +62,5 @@ export class EventService {
     delete(uuid: string): void {
         this.http.delete(`${this.apiUrl}/${uuid}`);
     }
-    
+
 }

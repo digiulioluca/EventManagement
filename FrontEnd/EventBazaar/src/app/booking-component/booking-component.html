@@ -11,10 +11,10 @@
 
   <ul *ngIf="!isLoading && !errorMessage && reservations.length > 0" class="reservation-list">
     <li *ngFor="let reservation of reservations" class="reservation-item">
-      <strong>eventLocation:</strong> {{ reservation.eventLocation }}<br />
-      <strong>eventTitle:</strong> {{ reservation.eventTitle }}<br />
-      <strong>eventDate:</strong> {{ reservation.eventTitle }}<br />
-      <strong>Data:</strong> {{ reservation.date | date:'dd/MM/yyyy' }}
+      <strong>Luogo dell'Evento:</strong> {{ reservation.eventLocation }}<br />
+      <strong>Nome dell'Evento:</strong> {{ reservation.eventTitle }}<br />
+      <strong>Data dell'Evento:</strong> {{ reservation.eventDate | date:'dd/MM/yyyy' }}<br />
+      <strong>Data della Prenotazione:</strong> {{ reservation.date | date:'dd/MM/yyyy' }}
     </li>
   </ul>
 

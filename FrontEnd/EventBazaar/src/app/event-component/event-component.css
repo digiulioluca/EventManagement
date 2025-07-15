@@ -1,89 +1,120 @@
-.container-fluid.event-form {
-  background-color: #f1f2e7;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+:host {
+  background-color: #f6f3ea;
   color: #0c0b0b;
-  max-width: 800px;
-  margin: 2rem auto;
+  display: block;
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  font-family: "Segoe UI", sans-serif;
+  
 }
 
 h2 {
   color: #5c4a08;
-  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  position: relative;
 }
 
-.styled-form .form-group {
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
+h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #ac8905;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
 }
 
-.styled-form label {
-  min-width: 120px;
+form.styled-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  background-color: #fffdf5;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(92, 74, 8, 0.1);
+}
+
+form label {
   font-weight: bold;
   color: #5c4a08;
+  margin-right: 1rem;
+  width: 150px;
 }
 
-.styled-form input,
-.styled-form select {
+form input,
+form select {
   flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ac8905;
+  padding: 0.6rem;
+  border: 2px solid #ac8905;
   border-radius: 8px;
+  font-size: 1rem;
   background-color: #fffdf5;
   color: #0c0b0b;
-  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.submit-button {
+form input:focus,
+form select:focus {
+  outline: none;
+  border-color: #fcc902;
+  box-shadow: 0 0 0 3px rgba(252, 201, 2, 0.25);
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+button.submit-button {
+  align-self: center;
+  padding: 0.7rem 1.5rem;
   background-color: #ac8905;
   color: #f1f2e7;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  margin-top: 1rem;
-  border-radius: 10px;
   font-weight: bold;
-  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.submit-button:hover:not(:disabled) {
+button.submit-button:disabled {
+  background-color: #e0d6b6;
+  cursor: not-allowed;
+}
+
+button.submit-button:hover:not(:disabled) {
   background-color: #fcc902;
   color: #0c0b0b;
 }
 
-.submit-button:disabled {
-  background-color: #d4c58a;
-  cursor: not-allowed;
-}
-
-.no-results {
-  text-align: center;
-  margin-top: 2rem;
-  color: #5c4a08;
-  font-weight: bold;
-}
+/* Risultati */
 
 .event-results {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
   margin-top: 2rem;
-  padding: 0 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .event-card {
   background-color: #fffdf5;
-  border: 1px solid #ac8905;
-  border-radius: 16px;
-  padding: 1rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 1.2rem;
+  border-radius: 12px;
+  border: 2px solid #ac8905;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(172, 137, 5, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(92, 74, 8, 0.2);
 }
 
 .event-card h3 {
@@ -93,22 +124,39 @@ h2 {
 
 .event-card p {
   margin: 0.25rem 0;
-  color: #0c0b0b;
-  font-size: 0.95rem;
 }
 
-@media (max-width: 576px) {
-  .styled-form label {
+.event-card strong {
+  color: #ac8905;
+}
+
+/* Nessun risultato */
+
+.no-results {
+  margin-top: 2rem;
+  text-align: center;
+  font-style: italic;
+  color: #5c4a08;
+  font-size: 1.1rem;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+  form label {
     width: 100%;
-    margin-bottom: 0.25rem;
   }
 
-  .styled-form input,
-  .styled-form select {
+  .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  button.submit-button {
     width: 100%;
   }
 
-  .event-results {
-    grid-template-columns: 1fr;
+  .event-card {
+    font-size: 0.95rem;
   }
 }
