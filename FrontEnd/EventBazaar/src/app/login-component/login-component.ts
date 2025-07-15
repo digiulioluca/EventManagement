@@ -40,7 +40,6 @@ export class LoginComponent {
           // Notifica e reindirizzamento
           alert('Accesso riuscito!');
           this.router.navigate(['/home']);
-          window.location.reload(); // forza il reload per aggiornare navbar o stato globale
         },
         error: (err) => {
           // Gestione errori di login
