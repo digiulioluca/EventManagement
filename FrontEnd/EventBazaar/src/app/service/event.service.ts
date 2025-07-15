@@ -11,14 +11,15 @@ export interface EventDTO {
     totalSeats: number,
     availableSeats: number,
     state: boolean,
-    eventCategory: EventCategory
+    eventCategory: EventCategory,
+    userUuid: string
 }
 
 export enum EventCategory {
     EMPTY = 'EMPTY',
     CONCERTS = 'CONCERTS',
     PLAY = 'PLAY',
-    SPORTS = 'SPORTS',
+    SPORTS = 'SPORT',
     EXHIBITIONS = 'EXHIBITIONS',
     OTHER = 'OTHER'
 }
@@ -34,12 +35,16 @@ export class EventService {
     constructor(private http: HttpClient) { }
 
     save(newEvent: EventDTO): Observable<EventDTO> {
-        return this.http.post<EventDTO>(`${this.apiUrl}/${newEvent.uuid}`, newEvent);
+        return this.http.post<EventDTO>(`${this.apiUrl}`, newEvent);
     }
 
     findAll(): Observable<EventDTO[]> {
         console.log('All events:', this.apiUrl);
         return this.http.get<EventDTO[]>(this.apiUrl);
+    }
+
+    getEventsByUserUuid(userUuid: string): Observable<EventDTO[]> {
+    return this.http.get<EventDTO[]>(`${this.apiUrl}/${userUuid}/events`);
     }
 
     getEventByUuid(uuid: string) {
@@ -59,8 +64,8 @@ export class EventService {
         return this.http.patch<EventDTO>(`${this.apiUrl}/${uuid}`, event);
     }
 
-    delete(uuid: string): void {
-        this.http.delete(`${this.apiUrl}/${uuid}`);
+    delete(uuid: string): Observable<void>{
+        return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
     }
 
     weeklyEvents(): Observable<EventDTO[]> {
