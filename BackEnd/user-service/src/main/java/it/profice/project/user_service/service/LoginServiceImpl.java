@@ -22,10 +22,25 @@ import java.util.UUID;
 @Slf4j
 public class LoginServiceImpl implements LoginService{
 
+    /**
+     * Injection della UserRepository e del PasswordEncoder
+     * AllArgsConstructor genera automaticamente il costruttore con tutti
+     * i parametri necessari per la dependency injection
+     * */
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
 
+    /**
+     * Il metodo gestisce la fase di login in due fasi:
+     * - ricerca della mail sulla base dati
+     * - confronto, attraverso il metodo matches, della pw inserita nel form
+     * con la versione "grezza" della password sulla base dati
+     *
+     * @param requestDTO -> JSON
+     *
+     * @return responseDTO
+     */
     @Override
     public ResponseDTO login(RequestDTO requestDTO) {
         User userToFind = userRepository.findByEmail(requestDTO.getEmail())
@@ -37,6 +52,13 @@ public class LoginServiceImpl implements LoginService{
         throw new LoginUnauthorizedException();
     }
 
+    /**
+     * Registrazione. Dopo aver ricevuto il JSON dal client, la pw viene
+     * criptata e, tramite il metodo modelToUserDTO, viene generato l'uuid
+     *
+     * @param  newUser -> JSON
+     * @return userDTO
+     */
     @Override
     public UserDTO register(UserDTO newUser) {
         String encodedPassword = passwordEncoder.encode(newUser.getPassword());
@@ -44,6 +66,12 @@ public class LoginServiceImpl implements LoginService{
         return modelToUserDTO(userRepository.save(userDtoToModel(newUser)));
     }
 
+    /**
+     * Conversione da User a ResponseDTO
+     *
+     * @param user -> istanza dell'entità
+     * @return ResponseDTO -> uuid e messaggio di conferma
+     */
     private ResponseDTO modelToResponseDto(User user) {
         return ResponseDTO.builder()
                 .uuid(user.getUuid())
@@ -51,6 +79,12 @@ public class LoginServiceImpl implements LoginService{
                 .build();
     }
 
+    /**
+     * Conversione da User a UserDTO
+     *
+     * @param user -> istanza dell'entità
+     * @return UserDTO -> ruolo, email, uuid, name
+     */
     private UserDTO modelToUserDTO(User user){
         return UserDTO.builder()
                 .role(user.getRole())
@@ -60,6 +94,13 @@ public class LoginServiceImpl implements LoginService{
                 .build();
     }
 
+    /**
+     * Conversione da UserDTO a User per il passaggio definitivo
+     * alla base dati
+     *
+     * @param newUser -> JSON ricevuto dal client
+     * @return User object
+     */
     private User userDtoToModel(UserDTO newUser) {
         return User.builder()
                 .email(newUser.getEmail())
