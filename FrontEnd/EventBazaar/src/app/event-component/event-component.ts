@@ -36,10 +36,18 @@ export class EventComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.eventForm.valid) {
-      const form = this.eventForm.value;
+    const form = this.eventForm.value;
+    if (this.eventForm.valid && !this.areAllFieldsEmpty(form)) {
 
       this.eventService.searchEvents(form).subscribe({
+        next: (res) => {
+          this.events = res;
+          this.searchExecuted = true;
+        },
+        error: (err) => console.error('Errore nella ricerca eventi:', err)
+      });
+    } else {
+      this.eventService.findAll().subscribe({
         next: (res) => {
           this.events = res;
           this.searchExecuted = true;
@@ -49,12 +57,13 @@ export class EventComponent implements OnInit {
     }
   }
 
+  areAllFieldsEmpty(form: FormGroup): boolean {
+    return Object.values(form).every(value => 
+        value === null || value === undefined || value === ''
+    );
+}
+
   onSelectEvent(eventUuid: string): void {
     this.router.navigate(['/events', eventUuid]);
-  }
-
-  isButtonDisabled(): boolean {
-    const values = Object.values(this.eventForm.value);
-    return !values.some(val => val && val.toString().trim() !== '');
   }
 }
