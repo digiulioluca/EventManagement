@@ -161,7 +161,7 @@ export class AdminComponent implements OnInit{
       description: '',
       date: new Date(),
       location: '',
-      totalSeats: 0,
+      totalSeats: 100,
       availableSeats: 0,
       state: true,
       eventCategory: EventCategory.EMPTY,
