@@ -24,7 +24,6 @@ public class ReservationDTO {
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String eventUuid;
-    @NotNull
     private LocalDate date;
     private String eventTitle;
     private Date eventDate;

@@ -16,8 +16,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     Optional<Event> findByUuid(String uuid);
     List<Event> findByUserUuid(String userUuid);
     @Query("""
-    SELECT e FROM Event e WHERE 
-        (:title IS NULL OR LOWER(e.title) LIKE LOWER(CONCAT(:title, '%'))) AND
+    SELECT e FROM Event e WHERE
+        (:title IS NULL OR TRIM(:title) = '' OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND
         (:dateFrom IS NULL OR e.date >= :dateFrom) AND
         (:dateTo IS NULL OR e.date <= :dateTo) AND
         (:location IS NULL OR LOWER(e.location) LIKE LOWER(CONCAT('%', :location, '%'))) AND
@@ -30,4 +30,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("location") String location,
             @Param("category") Category category
     );
+
+    @Query(value = """
+    SELECT TOP 5 FROM event
+    WHERE date BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY)
+    """, nativeQuery = true)
+    List<Event> findEventsNext7Days();
 }

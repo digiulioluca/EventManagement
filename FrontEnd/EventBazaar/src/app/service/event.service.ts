@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface EventDTO {
@@ -67,5 +67,9 @@ export class EventService {
     delete(uuid: string): Observable<void>{
         return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
     }
-    
+
+    weeklyEvents(): Observable<EventDTO[]> {
+        this.url = this.apiUrl+'/weekly';
+        return this.http.get<EventDTO[]>(this.url);
+    }
 }

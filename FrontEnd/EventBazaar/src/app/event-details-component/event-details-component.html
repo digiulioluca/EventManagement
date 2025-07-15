@@ -8,12 +8,18 @@
           <h3 class="card-title">{{ event.title }}</h3>
           <ul>
             <li><strong>Descrizione:</strong> {{ event.description }}</li>
-            <li><strong>Data:</strong> {{ event.date }}</li>
             <li>
-              <strong>Location :</strong> {{ event.location }}
+              <strong>Data:</strong> {{ event.date | date : "dd-MM-yyyy" }}
             </li>
-            <li><strong>Tipo evento: </strong> {{event.eventCategory}}</li>
+            <li><strong>Location :</strong> {{ event.location }}</li>
+            <li><strong>Tipo evento: </strong> {{ event.eventCategory }}</li>
           </ul>
+          <button
+            (click)="onReservationButton(event.uuid)"
+            class="details-button"
+          >
+            Prenota
+          </button>
         </div>
       </div>
     </div>
