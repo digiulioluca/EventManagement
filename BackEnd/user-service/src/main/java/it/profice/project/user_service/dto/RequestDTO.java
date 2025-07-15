@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestDTO {
+    // DTO per il metodo login
 
     @Email
     @NotEmpty
