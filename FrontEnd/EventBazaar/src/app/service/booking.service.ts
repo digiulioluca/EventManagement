@@ -9,6 +9,11 @@ export interface ReservationDTO {
   date: Date;
 }
 
+export interface RequestDTO {
+  eventUuid?: string;
+  userUuid?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +28,7 @@ export class BookingService {
     return this.http.get<ReservationDTO[]>(url);
   }
 
-  save(newReservation: ReservationDTO): Observable<ReservationDTO> {
+  save(newReservation: RequestDTO): Observable<ReservationDTO> {
     return this.http.post<ReservationDTO>(`${this.apiUrl}`, newReservation);
   }
 }

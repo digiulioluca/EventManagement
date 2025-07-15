@@ -15,9 +15,9 @@ export class NavbarComponent implements OnInit {
   userName: string | null = null;
   userRole: string | null = null;
 
-get isLoggedIn(): boolean {
-  return !!localStorage.getItem('uuid');
-}
+  get isLoggedIn(): boolean {
+    return !!localStorage.getItem('uuid');
+  }
 
   constructor(private http: HttpClient) {}
 
