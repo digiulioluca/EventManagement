@@ -4,8 +4,8 @@ import { LoginComponent } from './login-component/login-component';
 import { BookingComponent } from './booking-component/booking-component';
 import { EventComponent } from './event-component/event-component';
 import { AdminComponent } from './admin-component/admin-component';
-import { UserComponent } from './user-component/user-component';
 import { HomeComponent } from './home-component/home-component';
+import { UserComponent } from './user-component/user-component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },

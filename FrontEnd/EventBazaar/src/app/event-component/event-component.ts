@@ -1,49 +1,60 @@
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Event } from '../model/event';
+import { EventCategory, EventDTO, EventService } from '../service/event.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-event-component',
-  standalone: true,
-  imports: [CommonModule],
+  selector: 'app-event',
   templateUrl: './event-component.html',
-  styleUrl: './event-component.css'
+  styleUrls: ['./event-component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule]
 })
-export class EventComponent {
-  
-  events: Event[] = [];
-  private http = inject(HttpClient);
-  private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
-  
-  constructor() {
-    afterNextRender(() => {
-      this.showAll();
+export class EventComponent implements OnInit {
+  eventForm!: FormGroup;
+  events: EventDTO[] = [];
+  searchExecuted = false;
+  categoryOptions = Object.values(EventCategory);
+
+  constructor(
+    private fb: FormBuilder,
+    private eventService: EventService,
+    private router: Router,
+    private http: HttpClient
+  ) {}
+
+  ngOnInit(): void {
+    console.log(this.categoryOptions);
+    this.eventForm = this.fb.group({
+      title: [''],
+      dateFrom: [''],
+      dateTo: [''],
+      location: [''],
+      category: ['']
     });
   }
 
+  onSubmit(): void {
+    if (this.eventForm.valid) {
+      const form = this.eventForm.value;
 
-  showAll(): void {
-    this.http.get<Event[]>('http://localhost:8080/api/v1/events')
-      .subscribe({
+      this.eventService.searchEvents(form).subscribe({
         next: (res) => {
-          this.events = [...res];
-          console.log('Events loaded:', this.events);
-          this.cdr.markForCheck();
+          this.events = res;
+          this.searchExecuted = true;
         },
-        error: (err) => {
-          console.error(err);
-        }
+        error: (err) => console.error('Errore nella ricerca eventi:', err)
       });
+    }
   }
 
-  trackByEventId(index: number, event: Event): string {
-    return event.uuid;
+  onSelectEvent(eventUuid: string): void {
+    this.router.navigate(['/events', eventUuid]);
   }
 
-  onEventSelected(event: Event) {
-    this.router.navigate([`/${event.uuid}`]);
+  isButtonDisabled(): boolean {
+    const values = Object.values(this.eventForm.value);
+    return !values.some(val => val && val.toString().trim() !== '');
   }
 }
