@@ -13,8 +13,14 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
+
     Optional<Event> findByUuid(String uuid);
     List<Event> findByUserUuid(String userUuid);
+
+    /**
+     * Ricerca multicriterio.
+     * Query costruita per applicare solo filtri non nulli o non vuoti
+     */
     @Query("""
     SELECT e FROM Event e WHERE
         (:title IS NULL OR TRIM(:title) = '' OR LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND
@@ -31,6 +37,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("category") Category category
     );
 
+    /**
+     * Query per ottenere al massimo cinque eventi programmati nei prossimi sette giorni
+     */
     @Query(value = """
     SELECT * FROM Event
     WHERE date BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY)
