@@ -21,6 +21,11 @@ public class EventController {
         return eventService.findAll();
     }
 
+    @GetMapping("/weekly")
+    public List<EventDTO> weeklyEvents() {
+        return eventService.weeklyEvents();
+    }
+
     @PostMapping("/search")
     public List<EventDTO> searchEvents(@RequestBody EventRequestDTO request) {
         return eventService.searchEvents(request);

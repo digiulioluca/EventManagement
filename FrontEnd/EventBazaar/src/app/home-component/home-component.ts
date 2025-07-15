@@ -28,7 +28,7 @@ export class HomeComponent {
 
 
     showAll(): void {
-      this.eventService.findAll().pipe(
+      this.eventService.weeklyEvents().pipe(
               tap(data => console.log('Dati ricevuti dal backend:', data)),
               catchError(err => {
                 console.error('Errore durante la chiamata:', err);

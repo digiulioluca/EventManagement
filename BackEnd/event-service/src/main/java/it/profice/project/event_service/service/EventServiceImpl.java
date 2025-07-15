@@ -93,6 +93,14 @@ public class EventServiceImpl implements EventService {
         ).stream().map(this::modelToDto).toList();
     }
 
+    @Override
+    public List<EventDTO> weeklyEvents() {
+        return eventRepository.findEventsNext7Days()
+                .stream()
+                .map(this::modelToDto)
+                .toList();
+    }
+
     private EventDTO modelToDto(Event event) {
         return EventDTO.builder()
                 .uuid(event.getUuid())
