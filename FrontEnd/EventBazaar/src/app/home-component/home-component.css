@@ -1,129 +1,156 @@
-/* Contenitore principale */
-.booking-container {
-
+.homepage-container {
+  background-color: #f1f2e7;
+  color: #0c0b0b;
   padding: 2rem;
-  border-radius: 12px;
+  font-family: "Segoe UI", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Titolo principale */
-h1.title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #5c4a08;
+.title {
+  color: #ac8905;
+  font-size: 2.8rem;
+  margin-bottom: 1.5rem;
   text-align: center;
+}
+
+.intro {
+  max-width: 800px;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.features,
+.access-info {
+  max-width: 700px;
+  background-color: #fffdf5;
+  border-left: 6px solid #ac8905;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.features h2,
+.access-info h2 {
+  color: #5c4a08;
   margin-bottom: 1rem;
 }
 
-/* Box sezioni */
-.reservation-item {
-  background-color: #fffdf5;
-  border: 1px solid #ac8905;
-  border-left: 6px solid #fcc902;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(92, 74, 8, 0.1);
-  margin-bottom: 1.5rem;
-}
-
-/* Lista funzionalità */
-.features ul,
-.access-info ul {
+.features ul {
   list-style: none;
   padding-left: 0;
 }
-.features li,
-.access-info li {
+
+.features li {
   margin-bottom: 0.75rem;
   font-size: 1.05rem;
 }
 
-/* Link evidenziati */
 .highlight-link {
-  color: #ac8905;
-  font-weight: bold;
-  text-decoration: none;
-}
-.highlight-link:hover {
   color: #fcc902;
   text-decoration: underline;
+  font-weight: bold;
 }
 
-/* Pulsanti */
-.btn {
-  font-weight: 500;
-  border-radius: 6px;
+.highlight-link:hover {
+  color: #ac8905;
 }
-.btn-outline-primary {
-  border-color: #5c4a08;
+
+.event-preview {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 900px;
+}
+
+.preview-title {
   color: #5c4a08;
-}
-.btn-outline-primary:hover {
-  background-color: #5c4a08;
-  color: white;
-}
-.btn-success {
-  background-color: #ac8905;
-  border: none;
-}
-.btn-success:hover {
-  background-color: #fcc902;
-  color: black;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
-/* Carosello */
-.carousel {
-  margin-top: 1rem;
-}
-.carousel-item {
-  transition: transform 0.6s ease-in-out;
-}
 .event-card {
   background-color: #fffdf5;
   border: 1px solid #ac8905;
-  border-left: 6px solid #fcc902;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(92, 74, 8, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 10px rgba(172, 137, 5, 0.1);
+  transition: transform 0.2s ease;
 }
 
-/* Stato caricamento / errori */
-.loading,
-.error,
-.no-events {
-  text-align: center;
-  font-style: italic;
-  margin-top: 2rem;
-  color: #5c4a08;
+.event-card:hover {
+  transform: scale(1.02);
 }
-.error {
-  color: red;
+
+.details-button {
+  background-color: #ac8905;
+  color: #f1f2e7;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-/* Pulsanti prev/next del carosello */
-.carousel-control-prev,
-.carousel-control-next {
-  width: 5%;
-  background-color: rgba(172, 137, 5, 0.4); /* ocra trasparente */
-  border-radius: 50%;
-  top: 50%;
-  transform: translateY(-50%);
+
+.details-button:hover {
+  background-color: #fcc902;
+  color: #0c0b0b;
+}
+
+/* Layout dei blocchi */
+.row.justify-content-center > .col-md-3 {
+  display: flex;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Blocchi disabilitati */
+.disabled-card {
+  pointer-events: none;        /* Rende il div non cliccabile */
+  opacity: 0.5;                /* Applica effetto opaco */
+  cursor: not-allowed;         /* Mostra cursore disabilitato */
+  user-select: none;           /* Impedisce la selezione testo */
+}
+
+/* Carosello */
+.carousel-container {
+  margin-top: 4rem;
+}
+
+.carousel .carousel-inner {
+  max-height: 450px;
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  background-size: 80% 80%;
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(180deg) brightness(90%);
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  padding: 10px;
 }
 
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
-  background-color: rgba(172, 137, 5, 0.7);
-}
-.highlight-link {
-  color: #ac8905;
-  text-decoration: none;
-  font-weight: bold;
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
 }
 
-.highlight-link:hover {
-  text-decoration: underline;
-  color: #5c4a08;
+/* Stato caricamento ed errori */
+.loading,
+.error,
+.no-events {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  text-align: center;
 }
