@@ -110,3 +110,15 @@
   font-size: 1.1rem;
   text-align: center;
 }
+button {
+  align-self: center;
+  padding: 0.7rem 1.5rem;
+  background-color: #ac8905;
+  color: #f1f2e7;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

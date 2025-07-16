@@ -29,21 +29,47 @@
     </p>
   </div>
 
-  <!-- Sezione che mostra gli eventi disponibili, visibile solo se ci sono eventi -->
+  <!-- Carosello con gli eventi disponibili -->
   <div class="event-preview" *ngIf="events.length > 0">
     <h2 class="preview-title">Eventi in evidenza</h2>
 
-    <!-- Ciclo sugli eventi per mostrare le informazioni in una card -->
-    <div class="event-card" *ngFor="let item of events">
-      <h3>{{ item.title }}</h3>
-      <p><strong>Data:</strong> {{ item.date | date: 'dd-MM-yyyy' }}</p>
-      <p><strong>Luogo:</strong> {{ item.location }}</p>
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div
+          class="carousel-item"
+          *ngFor="let item of events; let i = index"
+          [class.active]="i === 0"
+          [attr.data-bs-interval]="getInterval(i)"
+        >
+          <div class="event-card p-4 border rounded text-center mx-auto" style="max-width: 500px;">
+            <h3>{{ item.title }}</h3>
+            <p><strong>Data:</strong> {{ item.date | date: 'dd-MM-yyyy' }}</p>
+            <p><strong>Luogo:</strong> {{ item.location }}</p>
 
-      <!-- Pulsante per andare al dettaglio evento -->
-      <button (click)="onEventSelected(item)" class="details-button">Dettagli</button>
+            <button (click)="onEventSelected(item)" class="btn btn-primary me-2">Dettagli</button>
+            <button (click)="onReservationButton(item.uuid)" class="btn btn-success">Prenota</button>
+          </div>
+        </div>
+      </div>
 
-      <!-- Pulsante per prenotare l'evento -->
-      <button (click)="onReservationButton(item.uuid)" class="details-button">Prenota</button>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleInterval"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Precedente</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleInterval"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Successivo</span>
+      </button>
     </div>
   </div>
 

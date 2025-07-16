@@ -76,5 +76,9 @@ export class HomeComponent {
     // Naviga alla pagina del dettaglio evento
     this.router.navigate([`events/${event.uuid}`]);
   }
+  getInterval(index: number): number {
+    // esempio: alterna 10s e 2s per ogni slide
+    return index % 2 === 0 ? 10000 : 2000;
+  }
 
 }
