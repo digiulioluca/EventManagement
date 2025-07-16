@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login-component.html',
   styleUrls: ['./login-component.css'],
 })
@@ -17,7 +18,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,   // costruttore FormBuilder per creare il form
     private http: HttpClient,  // per effettuare richieste HTTP
-    private router: Router     // per reindirizzamenti
+    private router: Router,     // per reindirizzamenti
+    private userService: UserService
   ) {
     // Inizializzazione del form con i due campi richiesti
     this.form = this.fb.group({
@@ -36,10 +38,12 @@ export class LoginComponent {
         next: (res) => {
           // Salva l'UUID dell'utente nel localStorage
           localStorage.setItem('uuid', res.uuid);
+          this.userService.loadUserByUuid(res.uuid);
+          window.location.reload();
 
           // Notifica e reindirizzamento
           alert('Accesso riuscito!');
-          this.router.navigate(['/home']);
+          this.router.navigate(['/events']);
         },
         error: (err) => {
           // Gestione errori di login
