@@ -1,27 +1,40 @@
-<!-- Titolo della pagina di registrazione -->
-<h2>Registrati</h2>
+<div class="booking-container container my-5">
+  <h2 class="text-center mb-4">📝 Registrati</h2>
 
-<!-- Form Angular reattivo, legato all'oggetto 'form' nel componente TS -->
-<form [formGroup]="form" (ngSubmit)="submit()">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="reservation-item"
+    style="max-width: 500px; margin: 0 auto;"
+  >
+    <!-- Nome -->
+    <label>
+      Nome:
+      <input type="text" formControlName="name" required />
+    </label>
 
-  <!-- Campo input per il nome utente, collegato al formControl 'name' -->
-  <label>
-    Nome:
-    <input type="text" formControlName="name" />
-  </label><br/>
+    <!-- Email -->
+    <label>
+      Email:
+      <input type="email" formControlName="email" required />
+    </label>
 
-  <!-- Campo input per l'email, con validazione incorporata via formControl 'email' -->
-  <label>
-    Email:
-    <input type="email" formControlName="email" />
-  </label><br/>
+    <!-- Password -->
+    <label>
+      Password:
+      <input type="password" formControlName="password" required />
+    </label>
 
-  <!-- Campo input per la password, collegato al formControl 'password' -->
-  <label>
-    Password:
-    <input type="password" formControlName="password" />
-  </label><br/>
-
-  <!-- Bottone di submit, disabilitato se il form non è valido -->
-  <button type="submit" [disabled]="form.invalid">Registrati</button>
-</form>
+    <!-- Submit -->
+    <div class="d-flex justify-content-center mt-4">
+      <button
+        type="submit"
+        class="btn btn-sm"
+        style="background-color: #fcc902; color: #0c0b0b;"
+        [disabled]="form.invalid"
+      >
+        <i class="bi bi-person-plus-fill"></i> Registrati
+      </button>
+    </div>
+  </form>
+</div>

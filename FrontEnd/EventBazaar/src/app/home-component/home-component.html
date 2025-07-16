@@ -1,60 +1,123 @@
-<div class="homepage-container">
-  <!-- Titolo principale della home page -->
-  <h1 class="title">Benvenuto su Eventi!</h1>
+<div class="booking-container container my-5">
+  <h1 class="text-center mb-4">🎉 Benvenuto su Eventi!</h1>
+  <p class="text-center mb-4">Il tuo portale per vivere esperienze indimenticabili!
+Eventi è la piattaforma che ti permette di scoprire, prenotare e gestire eventi in modo semplice e intuitivo.
+Che tu sia un appassionato alla ricerca di nuove attività o un organizzatore che vuole gestire al meglio le proprie iniziative, qui troverai tutto ciò che ti serve.</p>
 
-  <!-- Introduzione alla piattaforma -->
-  <p class="intro">
-    Eventi è la tua piattaforma di riferimento per scoprire, gestire e partecipare ad eventi di ogni tipo.
-    Che tu sia un semplice partecipante o un organizzatore, qui troverai tutto ciò che ti serve.
-  </p>
+  <h2 class="text-center mb-4"><i class="bi bi-stars"></i> Esplora le funzionalità</h2>
 
-  <!-- Sezione con elenco delle funzionalità principali -->
-  <div class="features">
-    <h2>Cosa puoi fare:</h2>
-    <ul>
-      <li>Esplora una vasta gamma di <strong>eventi</strong> disponibili nella sezione dedicata.</li>
-      <li>Prenota facilmente il tuo posto e gestisci le tue <strong>prenotazioni</strong>.</li>
-      <li>Aggiorna i tuoi dati personali nella sezione <strong>Profilo</strong>.</li>
-      <li>Se sei un amministratore, accedi al <strong>Portale Admin</strong> per gestire gli eventi.</li>
-    </ul>
+  <div class="row justify-content-center text-center">
+  <!-- Eventi: sempre cliccabile -->
+  <div class="col-md-3 mb-3">
+    <a routerLink="/events" class="card h-100 shadow-sm text-decoration-none text-dark">
+      <div class="card-body">
+        <i class="bi bi-calendar-event fs-2 mb-2 text-primary"></i>
+        <h5 class="card-title">Eventi</h5>
+        <p class="card-text">Scopri gli eventi disponibili e visualizza i dettagli.</p>
+      </div>
+    </a>
   </div>
 
-  <!-- Sezione con informazioni su login e registrazione -->
-  <div class="access-info">
-    <h2>Accesso e Registrazione</h2>
-    <p>
-      Per utilizzare tutte le funzionalità, effettua l'
-      <a routerLink="/login" routerLinkActive="active" class="highlight-link">accesso</a> o
-      <a routerLink="/register" routerLinkActive="active" class="highlight-link">registrati</a> se non hai ancora un account.
-    </p>
+  <!-- Prenotazioni: sempre cliccabile -->
+  <div class="col-md-3 mb-3">
+    <a routerLink="/reservations" class="card h-100 shadow-sm text-decoration-none text-dark">
+      <div class="card-body">
+        <i class="bi bi-bookmark-check fs-2 mb-2 text-success"></i>
+        <h5 class="card-title">Prenotazioni</h5>
+        <p class="card-text">Gestisci le tue prenotazioni passate e attive.</p>
+      </div>
+    </a>
   </div>
 
-  <!-- Sezione che mostra gli eventi disponibili, visibile solo se ci sono eventi -->
-  <div class="event-preview" *ngIf="events.length > 0">
-    <h2 class="preview-title">Eventi in evidenza</h2>
+  <!-- Profilo: cliccabile solo se loggato (USER o ADMIN) -->
+  <div class="col-md-3 mb-3">
+    <ng-container *ngIf="userRole === 'USER' || userRole === 'ADMIN'; else profiloDisabilitato">
+      <a routerLink="/user" class="card h-100 shadow-sm text-decoration-none text-dark">
+        <div class="card-body">
+          <i class="bi bi-person-circle fs-2 mb-2 text-warning"></i>
+          <h5 class="card-title">Profilo</h5>
+          <p class="card-text">Visualizza e modifica i tuoi dati personali.</p>
+        </div>
+      </a>
+    </ng-container>
+    <ng-template #profiloDisabilitato>
+      <div class="card h-100 shadow-sm text-muted disabled-card">
+        <div class="card-body">
+          <i class="bi bi-person-circle fs-2 mb-2 text-warning"></i>
+          <h5 class="card-title">Profilo</h5>
+          <p class="card-text">Accedi per gestire il tuo profilo.</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <!-- Admin: cliccabile solo se ADMIN -->
+  <div class="col-md-3 mb-3">
+    <ng-container *ngIf="userRole === 'ADMIN'; else adminDisabilitato">
+      <a routerLink="/admin" class="card h-100 shadow-sm text-decoration-none text-dark">
+        <div class="card-body">
+          <i class="bi bi-tools fs-2 mb-2 text-danger"></i>
+          <h5 class="card-title">Portale Admin</h5>
+          <p class="card-text">Crea, modifica e cancella eventi come amministratore.</p>
+        </div>
+      </a>
+    </ng-container>
+    <ng-template #adminDisabilitato>
+      <div class="card h-100 shadow-sm text-muted disabled-card">
+        <div class="card-body">
+          <i class="bi bi-tools fs-2 mb-2 text-danger"></i>
+          <h5 class="card-title">Portale Admin</h5>
+          <p class="card-text">Accesso riservato agli amministratori.</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
 
-    <!-- Ciclo sugli eventi per mostrare le informazioni in una card -->
-    <div class="event-card" *ngFor="let item of events">
-      <h3>{{ item.title }}</h3>
-      <p><strong>Data:</strong> {{ item.date | date: 'dd-MM-yyyy' }}</p>
-      <p><strong>Luogo:</strong> {{ item.location }}</p>
+  <div *ngIf="events.length > 0" class="reservation-item carousel-container">
+  <h2 class="text-center mb-3">
+    <i class="bi bi-calendar-event"></i> Eventi in evidenza
+  </h2>
 
-      <!-- Pulsante per andare al dettaglio evento -->
-      <button (click)="onEventSelected(item)" class="details-button">Dettagli</button>
+  <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div
+        class="carousel-item"
+        *ngFor="let item of events; let i = index"
+        [class.active]="i === 0"
+        [attr.data-bs-interval]="getInterval(i)"
+      >
+        <div class="event-card p-4 border rounded text-center mx-auto" style="max-width: 500px;">
+          <h3>{{ item.title }}</h3>
+          <p><strong>📅 Data:</strong> {{ item.date | date: 'dd-MM-yyyy' }}</p>
+          <p><strong>📍 Luogo:</strong> {{ item.location }}</p>
 
-      <!-- Pulsante per prenotare l'evento -->
-      <button (click)="onReservationButton(item.uuid)" class="details-button">Prenota</button>
+          <div class="d-flex justify-content-center gap-2 mt-3">
+            <button (click)="onEventSelected(item)"                 class="btn btn-sm d-flex align-items-center gap-1"
+                style="background-color: #ac8905; color: white;">
+              <i class="bi bi-eye"></i> Dettagli
+            </button>
+            <button (click)="onReservationButton(item.uuid)" class="btn btn-sm" style="background-color: #5c4a08; color: white;">
+              <i class="bi bi-ticket-perforated"></i> Prenota
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        <span class="visually-hidden">Precedente</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        <span class="visually-hidden">Successivo</span>
+      </button>
     </div>
   </div>
 
-  <!-- Messaggio di caricamento eventi -->
+  <!-- Loading / Error / No Events -->
   <div *ngIf="isLoading" class="loading">Caricamento eventi...</div>
-
-  <!-- Messaggio di errore in caso di problemi -->
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="!isLoading && !errorMessage && events.length === 0" class="loading">Nessun evento trovato.</div>
 
-  <!-- Messaggio se non ci sono eventi da mostrare -->
-  <div *ngIf="!isLoading && !errorMessage && events.length === 0" class="no-events">
-    Nessun evento trovato.
-  </div>
 </div>

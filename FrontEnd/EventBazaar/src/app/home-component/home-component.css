@@ -103,10 +103,54 @@
   color: #0c0b0b;
 }
 
+/* Layout dei blocchi */
+.row.justify-content-center > .col-md-3 {
+  display: flex;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Blocchi disabilitati */
+.disabled-card {
+  pointer-events: none;        /* Rende il div non cliccabile */
+  opacity: 0.5;                /* Applica effetto opaco */
+  cursor: not-allowed;         /* Mostra cursore disabilitato */
+  user-select: none;           /* Impedisce la selezione testo */
+}
+
+/* Carosello */
+.carousel-container {
+  margin-top: 4rem;
+}
+
+.carousel .carousel-inner {
+  max-height: 450px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+}
+
+/* Stato caricamento ed errori */
 .loading,
-.no-events,
-.error {
+.error,
+.no-events {
   margin-top: 2rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-align: center;
 }
