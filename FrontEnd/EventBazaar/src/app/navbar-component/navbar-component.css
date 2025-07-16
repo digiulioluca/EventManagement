@@ -1,0 +1,26 @@
+.navbar {
+  background-color: #0c0b0b; /* nero profondo personalizzato */
+}
+
+.navbar .nav-link {
+  color: #f1f2e7; /* bianco panna */
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #fcc902; /* giallo brillante */
+}
+
+.navbar .nav-link.active {
+  color: #ac8905; /* giallo ocra */
+  font-weight: 600;
+  border-bottom: 2px solid #ac8905;
+}
+
+.navbar .nav-link.text-warning {
+  color: #ac8905; /* sovrascrivi il bootstrap text-warning */
+}
+
+.navbar .nav-link.text-warning:hover {
+  color: #fcc902;
+}

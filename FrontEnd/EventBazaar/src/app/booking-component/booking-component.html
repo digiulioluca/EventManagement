@@ -8,28 +8,41 @@
   </div>
 </section>
 
-<div class="booking-container">
-  <h2>Le tue prenotazioni</h2>
+<div class="booking-container container my-5">
+  <h2>🎟️ Le tue prenotazioni</h2>
 
+  <!-- Loading -->
   <div *ngIf="isLoading" class="loading">
     Caricamento prenotazioni...
   </div>
 
+  <!-- Error -->
   <div *ngIf="errorMessage" class="error">
     {{ errorMessage }}
   </div>
 
-  <ul *ngIf="!isLoading && !errorMessage && reservations.length > 0" class="reservation-list">
-    <li *ngFor="let reservation of reservations" class="reservation-item">
-      <strong>Luogo dell'Evento:</strong> {{ reservation.eventLocation }}<br />
-      <strong>Nome dell'Evento:</strong> {{ reservation.eventTitle }}<br />
-      <strong>Data dell'Evento:</strong> {{ reservation.eventDate | date:'dd/MM/yyyy' }}<br />
-      <strong>Data della Prenotazione:</strong> {{ reservation.date | date:'dd/MM/yyyy' }}
-      <button (click)="removeReservation(reservation.uuid || '')">Elimina prenotazione</button>
-    </li>
-  </ul>
+  <!-- Lista prenotazioni -->
+  <div *ngIf="!isLoading && !errorMessage && reservations.length > 0" class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col" *ngFor="let reservation of reservations">
+      <div class="reservation-item h-100">
+        <h5 class="mb-2 text-uppercase">{{ reservation.eventTitle }}</h5>
+        <p><strong>📍 Luogo:</strong> {{ reservation.eventLocation }}</p>
+        <p><strong>📅 Data evento:</strong> {{ reservation.eventDate | date: 'dd/MM/yyyy' }}</p>
+        <p><strong>🕒 Prenotato il:</strong> {{ reservation.date | date: 'dd/MM/yyyy' }}</p>
+        <div class="d-flex justify-content-end mt-3">
+        <button
+          class="btn btn-sm d-flex align-items-center gap-1"
+          style="background-color: #ac8905; color: white;"
+          (click)="removeReservation(reservation.uuid || '')">
+          <i class="bi bi-trash3"></i> Elimina prenotazione
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <div *ngIf="!isLoading && !errorMessage && reservations.length === 0">
+  <!-- Nessuna prenotazione -->
+  <div *ngIf="!isLoading && !errorMessage && reservations.length === 0" class="loading">
     Nessuna prenotazione trovata.
   </div>
 </div>

@@ -1,44 +1,90 @@
-<div class="homepage-container">
-  <h1 class="title">Benvenuto su Eventi!</h1>
+<div class="booking-container container my-5">
+  <h1 class="text-center mb-4">🎉 Benvenuto su Eventi!</h1>
 
-  <p class="intro">
-    Eventi è la tua piattaforma di riferimento per scoprire, gestire e partecipare ad eventi di ogni tipo.
-    Che tu sia un semplice partecipante o un organizzatore, qui troverai tutto ciò che ti serve.
-  </p>
-
-  <div class="features">
-    <h2>Cosa puoi fare:</h2>
-    <ul>
-      <li>Esplora una vasta gamma di <strong>eventi</strong> disponibili nella sezione dedicata.</li>
-      <li>Prenota facilmente il tuo posto e gestisci le tue <strong>prenotazioni</strong>.</li>
-      <li>Aggiorna i tuoi dati personali nella sezione <strong>Profilo</strong>.</li>
-      <li>Se sei un amministratore, accedi al <strong>Portale Admin</strong> per gestire gli eventi.</li>
-    </ul>
-  </div>
-
-  <div class="access-info">
-    <h2>Accesso e Registrazione</h2>
+  <div class="reservation-item mb-4">
     <p>
-      Per utilizzare tutte le funzionalità, effettua l'
-      <a routerLink="/login" routerLinkActive="active" class="highlight-link">accesso</a> o
-      <a routerLink="/register" routerLinkActive="active" class="highlight-link">registrati</a> se non hai ancora un account.
+      Eventi è la tua piattaforma di riferimento per scoprire, gestire e partecipare ad eventi di ogni tipo.
+      Che tu sia un semplice partecipante o un organizzatore, qui troverai tutto ciò che ti serve.
     </p>
   </div>
 
-  <div class="event-preview" *ngIf="events.length > 0">
-    <h2 class="preview-title">Eventi in evidenza</h2>
-    <div class="event-card" *ngFor="let item of events">
-      <h3>{{ item.title }}</h3>
-      <p><strong>Data:</strong> {{ item.date | date: 'dd-MM-yyyy' }}</p>
-      <p><strong>Luogo:</strong> {{ item.location }}</p>
-      <button (click)="onEventSelected(item)" class="details-button">Dettagli</button>
-      <button (click)="onReservationButton(item.uuid)" class="details-button">Prenota</button>
+<div class="reservation-item mb-4">
+  <h2><i class="bi bi-stars"></i> Cosa puoi fare:</h2>
+  <ul>
+    <li>
+      🔍 Esplora una vasta gamma di
+      <a routerLink="/events" class="highlight-link"><strong>eventi</strong></a>
+      disponibili nella sezione dedicata.
+    </li>
+    <li>
+      📩 Prenota facilmente il tuo posto e gestisci le tue
+      <a routerLink="/bookings" class="highlight-link"><strong>prenotazioni</strong></a>.
+    </li>
+    <li>
+      👤 Aggiorna i tuoi dati personali nella sezione
+      <a routerLink="/profile" class="highlight-link"><strong>Profilo</strong></a>.
+    </li>
+    <li>
+      🛠️ Se sei un amministratore, accedi al
+      <a routerLink="/admin" class="highlight-link"><strong>Portale Admin</strong></a>
+      per gestire gli eventi.
+    </li>
+  </ul>
+</div>
+
+
+  <div class="reservation-item mb-4">
+    <h2><i class="bi bi-box-arrow-in-right"></i> Accesso e Registrazione</h2>
+    <p>
+      Per utilizzare tutte le funzionalità, effettua l'
+      <a routerLink="/login" routerLinkActive="active" class="highlight-link">accesso</a> o
+      <a routerLink="/register" routerLinkActive="active" class="highlight-link">registrati</a>
+      se non hai ancora un account.
+    </p>
+  </div>
+
+  <!-- Carosello Eventi -->
+  <div *ngIf="events.length > 0" class="reservation-item mb-4">
+    <h2 class="text-center mb-3"><i class="bi bi-calendar-event"></i> Eventi in evidenza</h2>
+
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div
+          class="carousel-item"
+          *ngFor="let item of events; let i = index"
+          [class.active]="i === 0"
+          [attr.data-bs-interval]="getInterval(i)"
+        >
+          <div class="event-card p-4 border rounded text-center mx-auto" style="max-width: 500px;">
+            <h3>{{ item.title }}</h3>
+            <p><strong>📅 Data:</strong> {{ item.date | date: 'dd-MM-yyyy' }}</p>
+            <p><strong>📍 Luogo:</strong> {{ item.location }}</p>
+
+            <div class="d-flex justify-content-center gap-2 mt-3">
+              <button (click)="onEventSelected(item)" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-info-circle"></i> Dettagli
+              </button>
+              <button (click)="onReservationButton(item.uuid)" class="btn btn-sm" style="background-color: #ac8905; color: white;">
+                <i class="bi bi-ticket-perforated"></i> Prenota
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        <span class="visually-hidden">Precedente</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        <span class="visually-hidden">Successivo</span>
+      </button>
     </div>
   </div>
 
+  <!-- Loading / Error / No Events -->
   <div *ngIf="isLoading" class="loading">Caricamento eventi...</div>
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  <div *ngIf="!isLoading && !errorMessage && events.length === 0" class="no-events">
-    Nessun evento trovato.
-  </div>
+  <div *ngIf="!isLoading && !errorMessage && events.length === 0" class="loading">Nessun evento trovato.</div>
 </div>

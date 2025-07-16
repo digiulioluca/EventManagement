@@ -1,114 +1,179 @@
-<div *ngIf="isLoading">Caricamento eventi</div>
+<div class="booking-container container my-5">
 
-<div *ngIf="!isLoading">
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">Caricamento eventi...</div>
 
-    <div *ngIf="!editMode && !addMode">
+    <!-- Vista lista eventi -->
+    <div *ngIf="!editMode && !addMode && !event">
 
-        <h2 *ngIf="!event ">{{ eventsState ? 'Eventi correnti' : 'Eventi conclusi' }}</h2>
+      <h2 class="text-center mb-4">
+        {{ eventsState ? '🎉 Eventi correnti' : '📅 Eventi conclusi' }}
+      </h2>
 
-     <ul *ngIf="!event && events.length > 0; else noEvents">
-         <ng-container *ngFor="let event of events">
-             <li *ngIf="event.state === eventsState" (click)="selectEvent(event)" >
-             <strong>{{event.title}}</strong>
-             <br>
-             {{event.location}}
-             <br>
-             {{event.date | date : 'dd/MM/yyyy'}}
-            </li>
-        </ng-container>
-    </ul>
+      <ul class="reservation-list">
+        <li
+          *ngFor="let ev of events"
+          class="reservation-item"
+          [class.disabled]="ev.state !== eventsState"
+          (click)="selectEvent(ev)"
+          style="cursor: pointer;"
+        >
+          <h5 class="mb-2 text-uppercase">{{ ev.title }}</h5>
+          <p><strong>📍 Luogo:</strong> {{ ev.location }}</p>
+          <p><strong>📅 Data evento:</strong> {{ ev.date | date : 'dd/MM/yyyy' }}</p>
+        </li>
+      </ul>
 
-    <p *ngIf="!event">
-        <button (click)="eventsState = !eventsState"> {{ eventsState ? 'Eventi conclusi' : 'Indietro' }}</button>
-        <button (click)="addEvent()">Aggiungi nuovo evento</button>
-    </p>
+      <div class="d-flex justify-content-between mt-3">
+        <button
+          class="btn btn-sm"
+          style="background-color: #ac8905; color: white;"
+          (click)="eventsState = !eventsState"
+        >
+          {{ eventsState ? 'Mostra eventi conclusi' : 'Mostra eventi correnti' }}
+        </button>
+        <button
+          class="btn btn-sm"
+          style="background-color: #fcc902; color: #0c0b0b;"
+          (click)="addEvent()"
+        >
+          <i class="bi bi-plus-circle"></i> Aggiungi nuovo evento
+        </button>
+      </div>
+    </div>
 
-    <ng-template #noEvents>
-        <p *ngIf="!editMode && !event">Nessun evento</p>
-    </ng-template>
+    <!-- Vista dettaglio evento -->
+    <div *ngIf="event && !editMode && !addMode" class="reservation-item">
+      <h3 class="mb-3 text-uppercase">{{ event.title }}</h3>
+      <p><strong>Descrizione:</strong> {{ event.description }}</p>
+      <p><strong>📅 Data:</strong> {{ event.date | date : 'dd/MM/yyyy' }}</p>
+      <p><strong>📍 Location:</strong> {{ event.location }}</p>
+      <p><strong>🎟️ Posti totali:</strong> {{ event.totalSeats }}</p>
+      <p><strong>💺 Posti liberi:</strong> {{ event.availableSeats }}</p>
+      <p><strong>📌 Stato:</strong> {{ event.state ? 'Da svolgersi' : 'Terminato' }}</p>
+      <p><strong>🏷️ Categoria:</strong> {{ event.eventCategory }}</p>
 
-    <div *ngIf="event">
-        <h2>{{event.title}}</h2>
-        <p><strong>Titolo:</strong> {{event.title}}</p>
-        <p><strong>Descrizione:</strong> {{event.description}}</p>
-        <p><strong>Data:</strong> {{event.date | date : 'dd/MM/yyyy'}}</p>
-        <p><strong>Location:</strong> {{event.location}}</p>
-        <p><strong>Posti totali:</strong> {{event.totalSeats}}</p>
-        <p><strong>Posti liberi:</strong> {{event.availableSeats}}</p>
-        <p><strong>Stato:</strong> {{ event.state ? 'Da svolgersi' : 'Terminato' }}</p>
-        <p><strong>Categoria:</strong> {{event.eventCategory}}</p>
+      <div class="d-flex justify-content-between mt-3">
+        <button
+          *ngIf="event.state"
+          class="btn btn-sm"
+          style="background-color: #fcc902; color: #0c0b0b;"
+          (click)="enableEdit()"
+        >
+          <i class="bi bi-pencil-square"></i> Modifica
+        </button>
 
-        <button *ngIf="event.state" (click)="enableEdit()">Modifica</button>
-        <button (click)="deleteEvent()">Elimina</button>
-            <button (click)="event = null">Annulla</button>
+        <button
+          class="btn btn-sm"
+          style="background-color: #ac8905; color: white;"
+          (click)="deleteEvent()"
+        >
+          <i class="bi bi-trash3"></i> Elimina
+        </button>
+
+        <button
+          class="btn btn-sm"
+          style="background-color: #5c4a08; color: white;"
+          (click)="event = null"
+        >
+          <i class="bi bi-x-circle"></i> Annulla
+        </button>
+      </div>
+    </div>
+
+    <!-- Form modifica evento -->
+    <div *ngIf="editMode && editableEvent" class="reservation-item">
+      <h3 class="mb-3 text-uppercase">Modifica: {{ editableEvent.title }}</h3>
+      <form (ngSubmit)="saveEdit()">
+        <label>
+          Titolo:
+          <input [(ngModel)]="editableEvent.title" name="title" required />
+        </label>
+        <label>
+          Descrizione:
+          <input [(ngModel)]="editableEvent.description" name="description" />
+        </label>
+        <label>
+          Data:
+          <input type="date" [(ngModel)]="editableEvent.date" name="date" />
+        </label>
+        <label>
+          Location:
+          <input [(ngModel)]="editableEvent.location" name="location" />
+        </label>
+        <label>
+          Posti totali:
+          <input type="number" [(ngModel)]="editableEvent.totalSeats" name="totalSeats" />
+        </label>
+        <label>
+          Posti liberi:
+          <input type="number" [(ngModel)]="editableEvent.availableSeats" name="availableSeats" />
+        </label>
+        <label>
+          Stato:
+          <input type="checkbox" [(ngModel)]="editableEvent.state" name="state" /> Da svolgersi
+        </label>
+        <label>
+          Categoria:
+          <select [(ngModel)]="editableEvent.eventCategory" name="eventCategory">
+            <option *ngFor="let cat of eventCategories" [value]="cat">{{ cat }}</option>
+          </select>
+        </label>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button type="submit" class="btn btn-sm" style="background-color: #fcc902; color: #0c0b0b;">
+            <i class="bi bi-save"></i> Salva
+          </button>
+          <button type="button" class="btn btn-sm" style="background-color: #5c4a08; color: white;" (click)="cancelEdit()">
+            <i class="bi bi-x-circle"></i> Annulla
+          </button>
+          <button type="button" class="btn btn-sm" style="background-color: #ac8905; color: white;" (click)="deleteEvent()">
+            <i class="bi bi-trash3"></i> Elimina
+          </button>
         </div>
+      </form>
     </div>
 
-    <div *ngIf="editMode && editableEvent">
-        <h2>{{editableEvent.title}}</h2>
-        <p>
-            <strong>Titolo:</strong>
-            <input [(ngModel)]="editableEvent.title">
-        </p>
-        <p>
-            <strong>Descrizione:</strong>
-            <input [(ngModel)]="editableEvent.description">
-        </p>
-        <p>
-            <strong>Data:</strong>
-            <input type="date" [(ngModel)]="editableEvent.date">
-        </p>
-        <p>
-            <strong>Location:</strong>
-            <input [(ngModel)]="editableEvent.location">
-        </p>
-        <p>
-            <strong>Posti totali:</strong>
-            <input [(ngModel)]="editableEvent.totalSeats">
-        </p>
-        <p>
-            <strong>Posti liberi;</strong>
-            <input [(ngModel)]="editableEvent.availableSeats">
-        </p>
-        <p>
-            <strong>Stato:</strong>
-            {{ editableEvent.state ? 'Da svolgersi' : 'Terminato' }}
-            <input type="checkbox" [(ngModel)]="editableEvent.state"> Cambia stato
-        </p>
-        <p>
-            <strong>Categoria:</strong> <select [(ngModel)]="editableEvent.eventCategory">
-            <option *ngFor="let cat of eventCategories" [value]="cat">{{cat}}</option></select>
-        </p>
-         <button (click)="saveEdit()">Salva</button>
-         <button (click)="cancelEdit()">Annulla</button>
-         <button (click)="deleteEvent()">Elimina</button>
+    <!-- Form aggiungi evento -->
+    <div *ngIf="addMode && newEvent" class="reservation-item">
+      <h3 class="mb-3 text-uppercase">Nuovo Evento</h3>
+      <form (ngSubmit)="saveNewEvent()">
+        <label>
+          Titolo:
+          <input [(ngModel)]="newEvent.title" name="title" required />
+        </label>
+        <label>
+          Descrizione:
+          <input [(ngModel)]="newEvent.description" name="description" />
+        </label>
+        <label>
+          Data:
+          <input type="date" [(ngModel)]="newEvent.date" name="date" />
+        </label>
+        <label>
+          Location:
+          <input [(ngModel)]="newEvent.location" name="location" />
+        </label>
+        <label>
+          Posti totali:
+          <input type="number" [(ngModel)]="newEvent.totalSeats" name="totalSeats" />
+        </label>
+        <label>
+          Categoria:
+          <select [(ngModel)]="newEvent.eventCategory" name="eventCategory">
+            <option *ngFor="let cat of eventCategories" [value]="cat">{{ cat }}</option>
+          </select>
+        </label>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button type="submit" class="btn btn-sm" style="background-color: #fcc902; color: #0c0b0b;">
+            <i class="bi bi-save"></i> Salva
+          </button>
+          <button type="button" class="btn btn-sm" style="background-color: #5c4a08; color: white;" (click)="cancelAdd()">
+            <i class="bi bi-x-circle"></i> Annulla
+          </button>
+        </div>
+      </form>
     </div>
 
-    <div *ngIf="addMode && newEvent">
-        <h2>Nuovo Evento</h2>
-        <p>
-            <strong>Titolo:</strong> <input [(ngModel)]="newEvent.title">
-        </p>
-        <p>
-            <strong>Descrizione:</strong> <input [(ngModel)]="newEvent.description">
-        </p>
-        <p>
-            <strong>Data:</strong> <input type="date" [(ngModel)]="newEvent.date">
-        </p>
-        <p>
-            <strong>Location:</strong> <input [(ngModel)]="newEvent.location">
-        </p>
-        <p>
-            <strong>Posti totali:</strong> <input [(ngModel)]="newEvent.totalSeats" type="number">
-        </p>
-        <p>
-            <strong>Categoria:</strong> <select [(ngModel)]="newEvent.eventCategory">
-            <option *ngFor="let cat of eventCategories" [value]="cat">{{cat}}</option></select>
-        </p>
-
-    <button (click)="saveNewEvent()">Salva</button>
-    <button (click)="cancelAdd()">Annulla</button>
   </div>
-</div>
-
-

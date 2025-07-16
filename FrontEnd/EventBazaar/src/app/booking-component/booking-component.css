@@ -1,97 +1,31 @@
-.booking-container {
+.card-title.text-primary {
+  color: #5c4a08 !important;
+}
+
+.card {
   background-color: #f1f2e7;
-  color: #0c0b0b;
-  padding: 2rem;
-  display: block;
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-  height: 100vh;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  font-family: "Segoe UI", sans-serif;
-  transition: box-shadow 0.3s ease;
 }
 
-.booking-container:hover {
-  box-shadow: 0 10px 30px rgba(172, 137, 5, 0.25);
+.btn-outline-danger {
+  border-color: #ac8905;
+  color: #ac8905;
 }
-
-.booking-container h2 {
-  color: #5c4a08;
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 1.8rem;
-  position: relative;
-}
-
-.booking-container h2::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 4px;
+.btn-outline-danger:hover {
   background-color: #ac8905;
-  margin: 0.5rem auto 0;
-  border-radius: 2px;
+  color: white;
 }
-
-.loading,
-.error {
-  text-align: center;
-  font-size: 1rem;
-  padding: 1rem;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-}
-
-.loading {
-  background-color: #fffdf5;
-  border-left: 4px solid #ac8905;
-}
-
-.error {
-  background-color: #f8d7da;
-  color: #842029;
-  border-left: 4px solid #842029;
-}
-
-.reservation-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
 .reservation-item {
   background-color: #fffdf5;
   border: 1px solid #ac8905;
   border-left: 6px solid #fcc902;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   margin-bottom: 1rem;
   box-shadow: 0 3px 10px rgba(92, 74, 8, 0.1);
   transition: transform 0.2s ease;
-}
-
-.reservation-item:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 14px rgba(92, 74, 8, 0.2);
-}
-
-.reservation-item strong {
-  color: #5c4a08;
-}
-
-@media (max-width: 600px) {
-  .booking-container {
-    padding: 1rem;
-  }
-
-  .reservation-item {
-    font-size: 0.95rem;
-  }
-
-  .booking-container h2 {
-    font-size: 1.5rem;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .bsb-hero-5 {

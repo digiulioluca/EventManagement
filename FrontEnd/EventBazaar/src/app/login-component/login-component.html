@@ -1,15 +1,28 @@
-<h2>Accedi</h2>
+<div class="booking-container container my-5">
+  <h2 class="text-center mb-4">🔐 Accedi</h2>
 
-<form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
-  <label>
-    Email:
-    <input type="email" formControlName="email" />
-  </label><br/>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="reservation-item" style="max-width: 500px; margin: 0 auto;">
 
-  <label>
-    Password:
-    <input type="password" formControlName="password" />
-  </label><br/>
+    <label>
+      Email:
+      <input type="email" formControlName="email" required />
+    </label>
 
-  <button type="submit" [disabled]="form.invalid">Accedi</button>
-</form>
+    <label>
+      Password:
+      <input type="password" formControlName="password" required />
+    </label>
+
+    <div class="d-flex justify-content-center mt-4">
+      <button
+        type="submit"
+        class="btn btn-sm"
+        style="background-color: #fcc902; color: #0c0b0b;"
+        [disabled]="form.invalid"
+      >
+        <i class="bi bi-box-arrow-in-right"></i> Accedi
+      </button>
+    </div>
+
+  </form>
+</div>

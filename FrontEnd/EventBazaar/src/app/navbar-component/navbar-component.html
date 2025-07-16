@@ -1,32 +1,42 @@
+<!-- Navbar Bootstrap scura -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid py-3">
-    <img src="assets/EventBazaar3.png" alt="Logo Eventi" class="me-2" style="height: 50px;" />
-    <a class="navbar-brand text-white" routerLink="/">EventBazaar</a>
 
+    <!-- Logo e titolo -->
+    <a class="navbar-brand text-white d-flex align-items-center gap-2" routerLink="/">
+      <img src="assets/img/EventBazar2.png" alt="Logo Eventi" style="height: 50px;" />
+    </a>
+
+    <!-- Bottone per menu mobile -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Menu di navigazione -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-
+        <!-- Link alla pagina Eventi, sempre visibile -->
         <li class="nav-item">
           <a class="nav-link text-white" routerLink="/events" routerLinkActive="active">Eventi</a>
         </li>
 
+        <!-- Link alle Prenotazioni, sempre visibile -->
         <li class="nav-item">
           <a class="nav-link text-white" routerLink="/reservations" routerLinkActive="active">Prenotazioni</a>
         </li>
 
+        <!-- Visibile solo per utenti con ruolo ADMIN -->
         <li class="nav-item" *ngIf="userRole === 'ADMIN'">
           <a class="nav-link text-warning" routerLink="/admin" routerLinkActive="active">Portale Admin</a>
         </li>
 
+        <!-- Visibile solo per utenti loggati NON admin -->
         <li class="nav-item" *ngIf="isLoggedIn && userRole !== 'ADMIN'">
           <a class="nav-link text-warning" routerLink="/user" routerLinkActive="active">Area Utente</a>
         </li>
 
+        <!-- Se l'utente NON è loggato: mostra Accedi e Registrati -->
         <ng-container *ngIf="!isLoggedIn">
           <li class="nav-item">
             <a class="nav-link text-white" routerLink="/login" routerLinkActive="active">Accedi</a>
@@ -36,6 +46,7 @@
           </li>
         </ng-container>
 
+        <!-- Se l'utente È loggato: mostra Benvenuto + Logout -->
         <ng-container *ngIf="isLoggedIn">
           <li class="nav-item">
             <span class="nav-link text-white">Benvenuto {{ userName }}!</span>
@@ -44,7 +55,6 @@
             <a class="nav-link text-white" style="cursor: pointer" (click)="logout()">Logout</a>
           </li>
         </ng-container>
-
       </ul>
     </div>
   </div>

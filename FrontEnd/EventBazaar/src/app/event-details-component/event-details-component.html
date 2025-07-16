@@ -1,28 +1,19 @@
-<div class="container">
-  @if(event) {
-  <h1>Dettagli dell'evento: {{ event.title }}</h1>
-  <section>
-    <div class="card-container">
-      <div class="card">
-        <div class="card-body">
-          <h3 class="card-title">{{ event.title }}</h3>
-          <ul>
-            <li><strong>Descrizione:</strong> {{ event.description }}</li>
-            <li>
-              <strong>Data:</strong> {{ event.date | date : "dd-MM-yyyy" }}
-            </li>
-            <li><strong>Location :</strong> {{ event.location }}</li>
-            <li><strong>Tipo evento: </strong> {{ event.eventCategory }}</li>
-          </ul>
-          <button
-            (click)="onReservationButton(event.uuid)"
-            class="details-button"
-          >
-            Prenota
-          </button>
-        </div>
-      </div>
-    </div>
+<div class="container my-4">
+  <section *ngIf="event" class="event-detail-card p-4 rounded shadow-sm" style="background-color: #fffdf5; border-left: 6px solid #fcc902;">
+    <h1 class="mb-3" style="color: #5c4a08;">Dettagli dell'evento: {{ event.title }}</h1>
+
+    <ul class="list-unstyled">
+      <li><strong>Descrizione:</strong> {{ event.description }}</li>
+      <li><strong>Data:</strong> {{ event.date | date: 'dd-MM-yyyy' }}</li>
+      <li><strong>Location:</strong> {{ event.location }}</li>
+      <li><strong>Tipo evento:</strong> {{ event.eventCategory }}</li>
+    </ul>
+
+    <button
+      class="btn"
+      style="background-color: #ac8905; color: white;"
+      (click)="onReservationButton(event.uuid)">
+      Prenota
+    </button>
   </section>
-  }
 </div>

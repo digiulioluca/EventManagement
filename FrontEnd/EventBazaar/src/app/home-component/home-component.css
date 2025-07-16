@@ -1,112 +1,129 @@
-.homepage-container {
-  background-color: #f1f2e7;
-  color: #0c0b0b;
+/* Contenitore principale */
+.booking-container {
+
   padding: 2rem;
-  font-family: "Segoe UI", sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.title {
-  color: #ac8905;
-  font-size: 2.8rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.intro {
-  max-width: 800px;
-  text-align: center;
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-}
-
-.features,
-.access-info {
-  max-width: 700px;
-  background-color: #fffdf5;
-  border-left: 6px solid #ac8905;
   border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.features h2,
-.access-info h2 {
+/* Titolo principale */
+h1.title {
+  font-size: 2.5rem;
+  font-weight: bold;
   color: #5c4a08;
+  text-align: center;
   margin-bottom: 1rem;
 }
 
-.features ul {
+/* Box sezioni */
+.reservation-item {
+  background-color: #fffdf5;
+  border: 1px solid #ac8905;
+  border-left: 6px solid #fcc902;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(92, 74, 8, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+/* Lista funzionalità */
+.features ul,
+.access-info ul {
   list-style: none;
   padding-left: 0;
 }
-
-.features li {
+.features li,
+.access-info li {
   margin-bottom: 0.75rem;
   font-size: 1.05rem;
 }
 
+/* Link evidenziati */
 .highlight-link {
+  color: #ac8905;
+  font-weight: bold;
+  text-decoration: none;
+}
+.highlight-link:hover {
   color: #fcc902;
   text-decoration: underline;
+}
+
+/* Pulsanti */
+.btn {
+  font-weight: 500;
+  border-radius: 6px;
+}
+.btn-outline-primary {
+  border-color: #5c4a08;
+  color: #5c4a08;
+}
+.btn-outline-primary:hover {
+  background-color: #5c4a08;
+  color: white;
+}
+.btn-success {
+  background-color: #ac8905;
+  border: none;
+}
+.btn-success:hover {
+  background-color: #fcc902;
+  color: black;
+}
+
+/* Carosello */
+.carousel {
+  margin-top: 1rem;
+}
+.carousel-item {
+  transition: transform 0.6s ease-in-out;
+}
+.event-card {
+  background-color: #fffdf5;
+  border: 1px solid #ac8905;
+  border-left: 6px solid #fcc902;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(92, 74, 8, 0.1);
+}
+
+/* Stato caricamento / errori */
+.loading,
+.error,
+.no-events {
+  text-align: center;
+  font-style: italic;
+  margin-top: 2rem;
+  color: #5c4a08;
+}
+.error {
+  color: red;
+}
+/* Pulsanti prev/next del carosello */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+  background-color: rgba(172, 137, 5, 0.4); /* ocra trasparente */
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-size: 80% 80%;
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(180deg) brightness(90%);
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(172, 137, 5, 0.7);
+}
+.highlight-link {
+  color: #ac8905;
+  text-decoration: none;
   font-weight: bold;
 }
 
 .highlight-link:hover {
-  color: #ac8905;
-}
-
-.event-preview {
-  margin-top: 2rem;
-  width: 100%;
-  max-width: 900px;
-}
-
-.preview-title {
+  text-decoration: underline;
   color: #5c4a08;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.event-card {
-  background-color: #fffdf5;
-  border: 1px solid #ac8905;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 10px rgba(172, 137, 5, 0.1);
-  transition: transform 0.2s ease;
-}
-
-.event-card:hover {
-  transform: scale(1.02);
-}
-
-.details-button {
-  background-color: #ac8905;
-  color: #f1f2e7;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  font-weight: bold;
-  margin-top: 0.75rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.details-button:hover {
-  background-color: #fcc902;
-  color: #0c0b0b;
-}
-
-.loading,
-.no-events,
-.error {
-  margin-top: 2rem;
-  font-size: 1.1rem;
-  text-align: center;
 }

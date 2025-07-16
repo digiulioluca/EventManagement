@@ -1,38 +1,59 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+/**
+ * DTO per rappresentare una prenotazione restituita dal backend
+ */
 export interface ReservationDTO {
-  uuid?: string;
-  eventLocation?: string;
-  eventTitle?: string;
-  eventDate?: string;
-  date?: Date;
+  uuid?: string;            // UUID della prenotazione (opzionale)
+  eventLocation?: string;   // Luogo dell'evento
+  eventTitle?: string;      // Titolo dell'evento
+  eventDate?: string;       // Data dell'evento come stringa
+  date?: Date;              // Data di prenotazione o altro scopo (opzionale)
 }
 
+/**
+ * DTO per rappresentare una richiesta di prenotazione inviata al backend
+ */
 export interface RequestDTO {
-  eventUuid?: string;
-  userUuid?: string;
+  eventUuid?: string;       // UUID dell'evento da prenotare
+  userUuid?: string;        // UUID dell'utente che prenota
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // Rende il servizio disponibile globalmente (singleton)
 })
 export class BookingService {
+  // URL base per tutte le chiamate al microservizio di prenotazione
   private apiUrl = 'http://localhost:8080/api/v1/reservations';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
+  /**
+   * Recupera tutte le prenotazioni di un utente specifico
+   * @param userUuid UUID dell'utente
+   * @returns Observable con array di ReservationDTO
+   */
   getReservationsByUser(userUuid: string): Observable<ReservationDTO[]> {
     const url = `${this.apiUrl}/${userUuid}/user`;
-    console.log('URL richiesta prenotazioni:', url);
+    console.log('URL richiesta prenotazioni:', url); // Per debug
     return this.http.get<ReservationDTO[]>(url);
   }
 
+  /**
+   * Invia una nuova richiesta di prenotazione al backend
+   * @param newReservation oggetto contenente UUID utente ed evento
+   * @returns Observable con i dati della prenotazione creata
+   */
   save(newReservation: RequestDTO): Observable<ReservationDTO> {
     return this.http.post<ReservationDTO>(`${this.apiUrl}`, newReservation);
   }
 
+  /**
+   * Cancella una prenotazione tramite il suo UUID
+   * @param uuid identificativo della prenotazione da cancellare
+   * @returns Observable che si completa una volta terminata l'eliminazione
+   */
   delete(uuid: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
   }
