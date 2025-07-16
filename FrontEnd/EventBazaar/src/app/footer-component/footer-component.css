@@ -1,0 +1,23 @@
+footer {
+  background-color: #0c0b0b; /* nero profondo */
+  color: #f1f2e7; /* bianco panna */
+}
+
+footer a {
+  color: #f1f2e7;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #fcc902; /* giallo brillante */
+}
+
+footer p {
+  margin-bottom: 0.5rem;
+}
+
+footer img {
+  height: 60px;
+  max-width: 100%;
+}
