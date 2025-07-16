@@ -28,6 +28,7 @@ form label {
   margin-bottom: 1rem;
   font-weight: 600;
   color: #5c4a08;
+
 }
 
 form input {
@@ -51,4 +52,5 @@ form input:focus {
   padding: 1rem;
   border-radius: 12px;
   text-align: center;
+  
 }

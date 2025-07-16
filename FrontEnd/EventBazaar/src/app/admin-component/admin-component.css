@@ -1,16 +1,9 @@
 .booking-container {
-  background-color: #f1f2e7;
   color: #0c0b0b;
   padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   font-family: "Segoe UI", sans-serif;
   transition: box-shadow 0.3s ease;
   min-height: 80vh;
-}
-
-.booking-container:hover {
-  box-shadow: 0 10px 30px rgba(172, 137, 5, 0.25);
 }
 
 .booking-container h2,
