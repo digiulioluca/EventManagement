@@ -56,8 +56,8 @@
 
       <!-- Pulsanti per modificare (solo se evento attivo), eliminare o annullare selezione -->
       <button *ngIf="event.state" (click)="enableEdit()">Modifica</button>
-      <button (click)="deleteEvent()">Elimina</button>
       <button (click)="event = null">Annulla</button>
+      <button (click)="deleteEvent()">Elimina</button>
     </div>
   </div>
 

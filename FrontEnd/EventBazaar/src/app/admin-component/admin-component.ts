@@ -103,6 +103,7 @@ export class AdminComponent implements OnInit{
 
   cancelEdit(): void {
     this.editMode = false;   
+    this.showValidationErrors = false;
   }
 
   saveEdit(): void {
@@ -139,6 +140,7 @@ export class AdminComponent implements OnInit{
   }
 
   deleteEvent(): void {
+    this.showValidationErrors = false;
     if (!this.event) return;
 
     const conferma = confirm('Sei sicuro di voler cancellare l\'evento?');
@@ -174,6 +176,7 @@ export class AdminComponent implements OnInit{
     };
 
   cancelAdd(): void {
+    this.showValidationErrors = false;
     this.addMode = false;
   }
 
