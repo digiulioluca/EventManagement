@@ -39,7 +39,7 @@ export class LoginComponent {
 
           // Notifica e reindirizzamento
           alert('Accesso riuscito!');
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
         },
         error: (err) => {
           // Gestione errori di login

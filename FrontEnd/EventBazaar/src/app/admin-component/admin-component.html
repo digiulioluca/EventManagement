@@ -8,7 +8,7 @@
   <div *ngIf="!editMode && !addMode">
 
     <!-- Titolo che cambia in base a eventsState e se non è selezionato nessun evento -->
-    <h2 *ngIf="!event ">
+    <h2 *ngIf="!event">
       {{ eventsState ? 'Eventi correnti' : 'Eventi conclusi' }}
     </h2>
 
@@ -62,74 +62,147 @@
   </div>
 
   <!-- Form di modifica evento -->
-  <div *ngIf="editMode && editableEvent">
-    <h2>{{editableEvent.title}}</h2>
-    <p>
-      <strong>Titolo:</strong>
-      <input [(ngModel)]="editableEvent.title">
-    </p>
-    <p>
-      <strong>Descrizione:</strong>
-      <input [(ngModel)]="editableEvent.description">
-    </p>
-    <p>
-      <strong>Data:</strong>
-      <input type="date" [(ngModel)]="editableEvent.date">
-    </p>
-    <p>
-      <strong>Location:</strong>
-      <input [(ngModel)]="editableEvent.location">
-    </p>
-    <p>
-      <strong>Posti totali:</strong>
-      <input [(ngModel)]="editableEvent.totalSeats">
-    </p>
-    <p>
-      <strong>Posti liberi:</strong>
-      <input [(ngModel)]="editableEvent.availableSeats">
-    </p>
-    <p>
-      <strong>Stato:</strong>
-      {{ editableEvent.state ? 'Da svolgersi' : 'Terminato' }}
-      <input type="checkbox" [(ngModel)]="editableEvent.state"> Cambia stato
-    </p>
-    <p>
-      <strong>Categoria:</strong>
-      <select [(ngModel)]="editableEvent.eventCategory">
+  <div *ngIf="editMode">
+    <h2>Modifica evento</h2>
+    <form [formGroup]="editEventForm" (ngSubmit)="saveEdit()" novalidate>
+      <div>
+        <strong>Titolo:</strong>
+        <input id="titleEdit" formControlName="title" placeholder="Inserisci il titolo">
+        <div *ngIf="editEventForm.get('title')?.touched && editEventForm.get('title')?.errors?.['minlength']">
+        <small class="text-danger">Deve contenere almeno 6 caratteri</small>
+        </div>
+        <div *ngIf="editEventForm.get('title')?.touched && editEventForm.get('title')?.errors?.['maxlength']">
+          <small class="text-danger">Non può superare 50 caratteri</small>
+        </div>
+        <div *ngIf="showValidationErrors && editEventForm.get('title')?.errors?.['required']">
+          <small class="text-danger">Il titolo è obbligatorio</small>
+        </div>
+      </div>
+      <div>
+        <strong>Descrizione:</strong>
+        <input id="descriptionEdit" formControlName="description" placeholder="Inserisci la descrizione">
+        <div *ngIf="editEventForm.get('description')?.touched && editEventForm.get('description')?.errors?.['maxlength']">
+        <small class="text-danger">La descrizione non può superare 1000 caratteri</small>
+        </div>
+        <div *ngIf="showValidationErrors && editEventForm.get('description')?.errors?.['required']">
+          <small class="text-danger">La descrizione è obbligatoria</small>
+        </div>
+      </div>
+      <div>
+        <strong>Data:</strong>
+        <input id="dateEdit" type="date" formControlName="date" [min]="todayString" placeholder="Seleziona la data">
+         <div *ngIf="showValidationErrors && editEventForm.get('date')?.errors?.['required']">
+        <small class="text-danger">La data è obbligatoria</small>
+        </div>
+      </div>
+      <div>
+        <strong>Location:</strong>
+        <input id="locationEdit" formControlName="location" placeholder="Inserisci la location">
+        <div *ngIf="showValidationErrors && editEventForm.get('location')?.errors?.['required']">
+        <small class="text-danger">La location è obbligatoria</small>
+        </div>
+      </div>
+      <div>
+        <strong>Posti totali:</strong>
+        <input id="totalSeatsEdit" type="number" formControlName="totalSeats">
+        <div *ngIf="editEventForm.get('totalSeats')?.touched && editEventForm.get('totalSeats')?.errors?.['min']">
+        <small class="text-danger">Minimo 100 posti</small>
+        </div>
+        <div *ngIf="showValidationErrors && editEventForm.get('totalSeats')?.errors?.['required']">
+          <small class="text-danger">I posti totali sono obbligatori</small>
+        </div>
+      </div>
+      <div>
+        <strong>Posti liberi:</strong>
+        <input id="availableSeatsEdit" type="number" formControlName="availableSeats">
+         <div *ngIf="editEventForm.get('availableSeats')?.touched && editEventForm.get('availableSeats')?.errors?.['min']">
+        <small class="text-danger">Minimo 0 posti liberi</small>
+        </div>
+      </div>
+      <div>
+        <strong>Stato:</strong>
+        <input id="stateEdit" type="checkbox" formControlName="state">
+        <span>{{editEventForm.get('state')?.value ? 'Da svolgersi' : 'Terminato'}}</span>
+      </div>
+      <div>
+        <strong>Categoria:</strong>
+        <select id="eventCategoryEdit" formControlName="eventCategory">
+        <option [ngValue]="null" disabled>Seleziona categoria</option>
         <option *ngFor="let cat of eventCategories" [value]="cat">{{cat}}</option>
-      </select>
-    </p>
-    <button (click)="saveEdit()">Salva</button>
-    <button (click)="cancelEdit()">Annulla</button>
-    <button (click)="deleteEvent()">Elimina</button>
+        </select>
+         <div *ngIf="showValidationErrors && editEventForm.get('eventCategory')?.errors?.['required']">
+        <small class="text-danger">La categoria è obbligatoria</small>
+        </div>
+      </div>
+      <button type="submit">Salva</button>
+      <button type="button" (click)="cancelEdit()">Annulla</button>
+      <button type="button" (click)="deleteEvent()">Elimina</button>
+  </form>
   </div>
 
   <!-- Form per aggiungere un nuovo evento -->
-  <div *ngIf="addMode && newEvent">
+  <div *ngIf="addMode">
     <h2>Nuovo Evento</h2>
-    <p>
-      <strong>Titolo:</strong> <input [(ngModel)]="newEvent.title">
-    </p>
-    <p>
-      <strong>Descrizione:</strong> <input [(ngModel)]="newEvent.description">
-    </p>
-    <p>
-      <strong>Data:</strong> <input type="date" [(ngModel)]="newEvent.date">
-    </p>
-    <p>
-      <strong>Location:</strong> <input [(ngModel)]="newEvent.location">
-    </p>
-    <p>
-      <strong>Posti totali:</strong> <input [(ngModel)]="newEvent.totalSeats" type="number">
-    </p>
-    <p>
-      <strong>Categoria:</strong>
-      <select [(ngModel)]="newEvent.eventCategory">
+    <form [formGroup]="addEventForm" (ngSubmit)="saveNewEvent()" novalidate>
+      <div>
+        <strong>Titolo:</strong>
+        <input id="titleAdd" formControlName="title" placeholder="Inserisci il titolo">
+        <div *ngIf="addEventForm.get('title')?.touched && addEventForm.get('title')?.errors?.['minlength']">
+        <small class="text-danger">Deve contenere almeno 6 caratteri</small>
+        </div>
+        <div *ngIf="addEventForm.get('title')?.touched && addEventForm.get('title')?.errors?.['maxlength']">
+          <small class="text-danger">Non può superare 50 caratteri</small>
+        </div>
+        <div *ngIf="showValidationErrors && addEventForm.get('title')?.errors?.['required']">
+          <small class="text-danger">Il titolo è obbligatorio</small>
+        </div>
+      </div>
+      <div>
+        <strong>Descrizione:</strong> 
+        <input id="descriptionAdd" formControlName="description" placeholder="Inserisci la descrizione">
+        <div *ngIf="addEventForm.get('description')?.touched && addEventForm.get('description')?.errors?.['maxlength']">
+          <small class="text-danger">La descrizione non può superare 1000 caratteri</small>
+        </div>
+        <div *ngIf="showValidationErrors && addEventForm.get('description')?.errors?.['required']">
+          <small class="text-danger">La descrizione è obbligatoria</small>
+        </div>
+      </div>
+      <div>
+        <strong>Data:</strong> 
+        <input id="dateAdd" type="date" formControlName="date" [min]="todayString" placeholder="Seleziona la data">
+        <div *ngIf="showValidationErrors && addEventForm.get('date')?.errors?.['required']">
+        <small class="text-danger">La data è obbligatoria</small>
+        </div>
+      </div>
+      <div>
+        <strong>Location:</strong> 
+        <input id="locationAdd" formControlName="location" placeholder="Inserisci la location">
+        <div *ngIf="showValidationErrors && addEventForm.get('location')?.errors?.['required']">
+        <small class="text-danger">La location è obbligatoria</small>
+        </div>
+      </div>
+      <div>
+        <strong>Posti totali:</strong> 
+        <input id="totalSeatsAdd" type="number" formControlName="totalSeats">
+        <div *ngIf="addEventForm.get('totalSeats')?.touched && addEventForm.get('totalSeats')?.errors?.['min']">
+        <small class="text-danger">Minimo 100 posti</small>
+        </div>
+        <div *ngIf="showValidationErrors && addEventForm.get('totalSeats')?.errors?.['required']">
+          <small class="text-danger">I posti totali sono obbligatori</small>
+        </div>
+      </div>
+      <div>
+        <strong>Categoria:</strong>
+        <select id="eventCategoryAdd" formControlName="eventCategory">
+        <option [ngValue]="null" disabled>Seleziona categoria</option>
         <option *ngFor="let cat of eventCategories" [value]="cat">{{cat}}</option>
-      </select>
-    </p>
-
-    <button (click)="saveNewEvent()">Salva</button>
-    <button (click)="cancelAdd()">Annulla</button>
+        </select>
+        <div *ngIf="showValidationErrors && addEventForm.get('eventCategory')?.errors?.['required']">
+        <small class="text-danger">La categoria è obbligatoria</small>
+        </div>
+      </div>
+    <button type="submit">Salva</button>
+    <button type="button" (click)="cancelAdd()">Annulla</button>
+    </form>
   </div>
 </div>
