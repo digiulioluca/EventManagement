@@ -11,6 +11,10 @@ import java.util.List;
 @Configuration
 public class GatewayCorsConfig {
 
+    /**
+     * Configurazione di un filtro CORS per permettere le richieste cross-origin, applicato
+     * a tutti gli endpoint ("/**")
+     */
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();

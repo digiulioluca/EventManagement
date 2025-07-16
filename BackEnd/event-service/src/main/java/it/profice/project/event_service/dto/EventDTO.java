@@ -17,6 +17,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventDTO {
+
+    // DTO per la gestione dei metodi GET, POST, PUT e PATCH
+
     private String uuid;
     @Size(min = 6, max = 50)
     @NotNull

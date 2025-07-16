@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    // metodi personalizzati per l'implementazione del service
+    // metodi personalizzati JPA
     Optional<User> findByUuid(String uuid);
     Optional<User> findByEmail(String email);
 }

@@ -1,7 +1,6 @@
 package it.profice.project.user_service.service;
 
 
-import it.profice.project.user_service.controller.LoginController;
 import it.profice.project.user_service.dto.RequestDTO;
 import it.profice.project.user_service.dto.ResponseDTO;
 import it.profice.project.user_service.dto.UserDTO;

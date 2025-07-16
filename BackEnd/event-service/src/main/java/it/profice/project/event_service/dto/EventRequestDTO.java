@@ -13,6 +13,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventRequestDTO {
+
+    // DTO per la ricerca eventi
     private String title;
     private Date dateFrom;
     private Date dateTo;
