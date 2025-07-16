@@ -1,42 +1,76 @@
-<!-- Mostra messaggio di caricamento finché i dati utente non sono stati caricati -->
-<div *ngIf="isLoading">Caricamento profilo</div>
+<div class="booking-container container my-5">
 
-<!-- Mostra i dati utente solo se il caricamento è completato e l'utente è presente -->
-<div *ngIf="!isLoading && user">
-  <h2>Profilo Utente</h2>
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">Caricamento profilo...</div>
 
-  <!-- Modalità visualizzazione: mostra dati utente senza possibilità di modifica -->
-  <div *ngIf="!editMode">
-    <p><strong>Nome:</strong> {{ user.name }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Ruolo:</strong> {{ user.role }}</p>
+  <!-- User Data -->
+  <div *ngIf="!isLoading && user">
 
-    <!-- Pulsanti per modificare o cancellare il profilo -->
-    <button (click)="enableEdit()">Modifica</button>
-    <button (click)="deleteProfile()">Cancella Profilo</button>
+    <h2 class="text-center mb-4">👤 Profilo Utente</h2>
+
+    <!-- Visualizzazione dati -->
+    <div *ngIf="!editMode" class="reservation-item">
+      <p><strong>Nome:</strong> {{ user.name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Ruolo:</strong> {{ user.role }}</p>
+
+      <div class="d-flex justify-content-between mt-3">
+        <button
+          class="btn btn-sm"
+          style="background-color: #fcc902; color: #0c0b0b;"
+          (click)="enableEdit()"
+        >
+          <i class="bi bi-pencil-square"></i> Modifica
+        </button>
+
+        <button
+          class="btn btn-sm btn-outline-danger"
+          (click)="deleteProfile()"
+        >
+          <i class="bi bi-trash3"></i> Cancella Profilo
+        </button>
+      </div>
+    </div>
+
+    <!-- Modalità modifica -->
+    <div *ngIf="editMode && editableUser" class="reservation-item">
+      <form (ngSubmit)="saveEdit()">
+        <label>
+          Nome:
+          <input [(ngModel)]="editableUser.name" name="name" required />
+        </label>
+        <label>
+          Email:
+          <input [(ngModel)]="editableUser.email" name="email" required type="email" />
+        </label>
+        <p><strong>Ruolo:</strong> {{ user.role }}</p>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button type="submit" class="btn btn-sm" style="background-color: #fcc902; color: #0c0b0b;">
+            <i class="bi bi-save"></i> Salva
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm"
+            style="background-color: #5c4a08; color: white;"
+            (click)="cancelEdit()"
+          >
+            <i class="bi bi-x-circle"></i> Annulla
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-danger"
+            (click)="deleteProfile()"
+          >
+            <i class="bi bi-trash3"></i> Cancella Profilo
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <!-- Modalità modifica: mostra form con input precompilati -->
-  <div *ngIf="editMode && editableUser">
-    <p>
-      <strong>Nome:</strong>
-      <input [(ngModel)]="editableUser.name" />
-    </p>
-    <p>
-      <strong>Email:</strong>
-      <input [(ngModel)]="editableUser.email" />
-    </p>
-    <!-- Ruolo non modificabile: solo visualizzazione -->
-    <p><strong>Ruolo:</strong> {{ user.role }}</p>
-
-    <!-- Pulsanti per salvare, annullare modifiche o cancellare il profilo -->
-    <button class="primary" (click)="saveEdit()">Salva</button>
-    <button class="outline" (click)="cancelEdit()">Annulla</button>
-    <button class="danger" (click)="deleteProfile()">Cancella Profilo</button>
+  <!-- Utente non trovato -->
+  <div *ngIf="!isLoading && !user" class="loading">
+    Utente non trovato.
   </div>
-</div>
-
-<!-- Messaggio mostrato se l'utente non è stato trovato dopo il caricamento -->
-<div *ngIf="!isLoading && !user">
-  <p>Utente non trovato</p>
 </div>

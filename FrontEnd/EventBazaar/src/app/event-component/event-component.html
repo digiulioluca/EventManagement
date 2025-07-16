@@ -1,76 +1,88 @@
-<div class="container-fluid event-form d-flex p-2 m-2 flex-column justify-content-center align-items-center">
-  <!-- Titolo della sezione di ricerca eventi -->
-  <h2 class="text-center">Cerca Eventi</h2>
+<div class="container event-search-container p-4 my-4">
 
-  <!-- Form di ricerca eventi con binding Reactive Forms e submit -->
-  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="styled-form">
+  <!-- Titolo -->
+  <h2 class="text-center mb-4" style="color: #5c4a08;">Cerca Eventi</h2>
 
-    <!-- Campo input per il titolo dell'evento -->
-    <div class="container form-group d-flex p-2 justify-content-between">
-      <label for="title">Titolo</label>
-      <input type="text" id="title" formControlName="title" />
+  <!-- Form di ricerca eventi con Reactive Forms -->
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="mb-4">
+
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <label for="title" class="form-label">Titolo</label>
+        <input type="text" id="title" formControlName="title" class="form-control" />
+      </div>
+
+      <div class="col-md-3">
+        <label for="dateFrom" class="form-label">Data Inizio</label>
+        <input type="date" id="dateFrom" formControlName="dateFrom" class="form-control" />
+      </div>
+
+      <div class="col-md-3">
+        <label for="dateTo" class="form-label">Data Fine</label>
+        <input type="date" id="dateTo" formControlName="dateTo" class="form-control" />
+      </div>
+
+      <div class="col-md-6">
+        <label for="location" class="form-label">Luogo</label>
+        <input type="text" id="location" formControlName="location" class="form-control" />
+      </div>
+
+      <div class="col-md-6">
+        <label for="category" class="form-label">Categoria evento</label>
+        <select id="category" formControlName="category" class="form-select">
+          @for (option of categoryOptions; track option) {
+            <option [disabled]="option === 'EMPTY'" [value]="option">{{ option }}</option>
+          }
+        </select>
+      </div>
+
     </div>
 
-    <!-- Campo input per la data di inizio ricerca -->
-    <div class="container form-group d-flex p-2 align-items-center justify-content-around">
-      <label for="dateFrom">Data Inizio</label>
-      <input type="date" id="dateFrom" formControlName="dateFrom" />
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-event d-flex align-items-center justify-content-center mx-auto gap-2 px-4">
+        <i class="bi bi-search"></i> Cerca
+      </button>
     </div>
-
-    <!-- Campo input per la data di fine ricerca -->
-    <div class="container form-group d-flex p-2 align-items-center justify-content-around">
-      <label for="dateTo">Data Fine</label>
-      <input type="date" id="dateTo" formControlName="dateTo" />
-    </div>
-
-    <!-- Campo input per il luogo dell'evento -->
-    <div class="container form-group d-flex p-2 align-items-center justify-content-around">
-      <label for="location">Luogo</label>
-      <input type="text" id="location" formControlName="location" />
-    </div>
-
-    <!-- Select dropdown per la categoria evento -->
-    <div class="container form-group d-flex p-2 align-items-center justify-content-around">
-      <label for="category">Categoria evento</label>
-      <select formControlName="category">
-        <!-- Ciclo sulle opzioni di categoria disponibili -->
-        @for (option of categoryOptions; track option) {
-        <option
-          [disabled]="option === 'EMPTY'"
-          [value]="option">
-          {{ option }}
-        </option>
-        }
-      </select>
-    </div>
-
-    <!-- Pulsante per inviare il form di ricerca -->
-    <button class="submit-button">Cerca</button>
   </form>
-</div>
 
-<!-- Messaggio di avviso se la ricerca è stata effettuata ma non ci sono risultati -->
-@if (searchExecuted && events.length === 0) {
-<div class="no-results">
-  <p>Nessun evento trovato.</p>
-</div>
-}
+  <!-- Messaggio nessun risultato -->
+  @if (searchExecuted && events.length === 0) {
+    <div class="alert alert-warning text-center" role="alert">
+      Nessun evento trovato.
+    </div>
+  }
 
-<!-- Se ci sono eventi nella lista, mostra i risultati -->
-@if (events.length > 0) {
-<div class="event-results">
-  <!-- Ciclo sugli eventi trovati -->
-  @for (ev of events; track ev.uuid) {
-  <div class="event-card">
-    <h3>{{ ev.title }}</h3>
-    <p><strong>Data:</strong> {{ ev.date | date: 'dd-MM-yyyy'}}</p>
-    <p><strong>Luogo:</strong> {{ ev.location }}</p>
-    <p><strong>Categoria:</strong> {{ ev.eventCategory }}</p>
-    <!-- Pulsante per navigare al dettaglio evento -->
-    <button (click)="onSelectEvent(ev.uuid)" class="details-button">Dettagli</button>
-    <!-- Pulsante per prenotare l'evento -->
-    <button (click)="onReservationButton(ev.uuid)" class="details-button">Prenota</button>
-  </div>
+  <!-- Lista eventi trovati -->
+  @if (events.length > 0) {
+    <div class="event-results row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+      @for (ev of events; track ev.uuid) {
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0" style="background-color: #fffdf5;">
+            <div class="card-body">
+              <h5 class="card-title text-dark">{{ ev.title }}</h5>
+              <p class="card-text mb-1"><strong>📅 Data:</strong> {{ ev.date | date: 'dd-MM-yyyy' }}</p>
+              <p class="card-text mb-1"><strong>📍 Luogo:</strong> {{ ev.location }}</p>
+              <p class="card-text"><strong>🎭 Categoria:</strong> {{ ev.eventCategory }}</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between bg-transparent border-0 px-3 pb-3">
+              <button
+                (click)="onSelectEvent(ev.uuid)"
+                class="btn btn-sm d-flex align-items-center gap-1"
+                style="background-color: #ac8905; color: white;">
+                <i class="bi bi-eye"></i> Dettagli
+              </button>
+              <button
+                (click)="onReservationButton(ev.uuid)"
+                class="btn btn-sm d-flex align-items-center gap-1"
+                style="background-color: #5c4a08; color: white;">
+                <i class="bi bi-ticket-perforated"></i> Prenota
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
   }
 </div>
-}
