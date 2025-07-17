@@ -28,7 +28,7 @@
       <div *ngIf="events.length > 0; else noEvents" class="row row-cols-1 row-cols-md-2 g-4">
         <div class="col" *ngFor="let event of events">
           <div class="reservation-item h-100" [class.disabled]="event.state !== eventsState" (click)="selectEvent(event)">
-            <h5 class="mb-2 text-uppercase text-center">{{ event.title }}</h5>
+            <h5 class="mb-2 text-uppercase">{{ event.title }}</h5>
             <p><strong>📍 Luogo:</strong> {{ event.location }}</p>
             <p><strong>📅 Data evento:</strong> {{ event.date | date: 'dd/MM/yyyy' }}</p>
           </div>

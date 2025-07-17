@@ -86,6 +86,7 @@ public class EventServiceImpl implements EventService {
 
         eventToUpdate.setEventCategory(event.getEventCategory());
         eventToUpdate.setDate(event.getDate());
+        eventToUpdate.setLocation(event.getLocation());
         eventToUpdate.setAvailableSeats(event.getAvailableSeats());
         eventToUpdate.setTotalSeats(event.getTotalSeats());
         eventToUpdate.setTitle(event.getTitle());
@@ -110,6 +111,7 @@ public class EventServiceImpl implements EventService {
 
         if(event.getEventCategory() != null) eventToUpdate.setEventCategory(event.getEventCategory());
         if(event.getDate() != null) eventToUpdate.setDate(event.getDate());
+        if(event.getLocation() != null) eventToUpdate.setLocation(event.getLocation());
         if(event.getAvailableSeats() != null) eventToUpdate.setAvailableSeats(event.getAvailableSeats());
         if(event.getTotalSeats() != null) eventToUpdate.setTotalSeats(event.getTotalSeats());
         if(event.getTitle() != null) eventToUpdate.setTitle(event.getTitle());
