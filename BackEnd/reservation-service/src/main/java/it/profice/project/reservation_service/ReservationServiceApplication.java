@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ReservationServiceApplication {
+public class ReservationServiceApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(ReservationServiceApplication.class, args);
