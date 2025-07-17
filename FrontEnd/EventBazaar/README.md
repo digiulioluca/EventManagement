@@ -1,5 +1,17 @@
 # EventBazaar
 
+
+Ruoli:
+
+- Luca: Backend (Event Service); Frontend: Event, Event-details e Home Component
+- Marco: Backend (User Service, API Gateway e Discovery Server); Frontend: formattazione e definizione stile dei singoli componenti, Booking, Footer, Login, Navbar e Register Component
+- Martina: Backend (Reservation Service); Frontend: Admin e User component
+
+Il software si propone di fornire agli organizzatori un'unica piattaforma integrata che copra l'intero ciclo di vita di un evento, dalla fase di creazione e configurazione fino alla gestione delle prenotazioni e al monitoraggio post-evento.
+
+
+
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.0.
 
 ## Development server
