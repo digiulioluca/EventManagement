@@ -21,24 +21,25 @@
       </h1>
 
 
-      <!-- Lista eventi -->
-      <div class="booking-container container my-5">
-        <h2>📅 Elenco Eventi</h2>
+    <!-- Lista eventi -->
+    <div *ngIf="!editMode && !addMode && !event" class="booking-container container my-5">
+      <h2>📅 Elenco Eventi</h2>
 
-        <div *ngIf="!event && events.length > 0; else noEvents" class="row row-cols-1 row-cols-md-2 g-4">
-          <div class="col" *ngFor="let event of events">
-            <div class="reservation-item h-100" [class.disabled]="event.state !== eventsState" (click)="selectEvent(event)">
-              <h5 class="mb-2 text-uppercase text-center">{{ event.title }}</h5>
-              <p><strong>📍 Luogo:</strong> {{ event.location }}</p>
-              <p><strong>📅 Data evento:</strong> {{ event.date | date: 'dd/MM/yyyy' }}</p>
-            </div>
+      <div *ngIf="events.length > 0; else noEvents" class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" *ngFor="let event of events">
+          <div class="reservation-item h-100" [class.disabled]="event.state !== eventsState" (click)="selectEvent(event)">
+            <h5 class="mb-2 text-uppercase text-center">{{ event.title }}</h5>
+            <p><strong>📍 Luogo:</strong> {{ event.location }}</p>
+            <p><strong>📅 Data evento:</strong> {{ event.date | date: 'dd/MM/yyyy' }}</p>
           </div>
         </div>
-
-        <ng-template #noEvents>
-          <div class="no-events-message" aria-live="polite">Nessun evento trovato.</div>
-        </ng-template>
       </div>
+
+      <ng-template #noEvents>
+        <div class="no-events-message" aria-live="polite">Nessun evento trovato.</div>
+      </ng-template>
+    </div>
+
 
       <!-- Pulsanti per cambio vista e aggiunta -->
       <div class="button-group" *ngIf="!event">
@@ -56,8 +57,6 @@
         <p><strong>Data:</strong> {{ event.date | date:'dd/MM/yyyy' }}</p>
         <p><strong>Location:</strong> {{ event.location }}</p>
         <p><strong>Posti totali:</strong> {{ event.totalSeats }}</p>
-        <p><strong>Posti liberi:</strong> {{ event.availableSeats }}</p>
-        <p><strong>Stato:</strong> {{ event.state ? 'Da svolgersi' : 'Terminato' }}</p>
         <p><strong>Categoria:</strong> {{ event.eventCategory }}</p>
 
         <!-- Pulsanti azione dettaglio -->
@@ -228,19 +227,6 @@
           <div *ngIf="showValidationErrors && addEventForm.get('totalSeats')?.errors?.['required']" class="text-danger small">
             I posti totali sono obbligatori
           </div>
-        </div>
-
-        <div class="mb-3">
-          <label for="availableSeatsAdd" class="form-label"><strong>Posti liberi:</strong></label>
-          <input id="availableSeatsAdd" type="number" formControlName="availableSeats" class="form-control">
-          <div *ngIf="addEventForm.get('availableSeats')?.touched && addEventForm.get('availableSeats')?.errors?.['min']" class="text-danger small">
-            Minimo 0 posti liberi
-          </div>
-        </div>
-
-        <div class="form-check mb-3">
-          <input id="stateAdd" type="checkbox" formControlName="state" class="form-check-input">
-          <label for="stateAdd" class="form-check-label"><strong>Stato:</strong> <span>{{addEventForm.get('state')?.value ? 'Da svolgersi' : 'Terminato'}}</span></label>
         </div>
 
         <div class="mb-3">
