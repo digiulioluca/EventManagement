@@ -18,12 +18,12 @@
       <ul class="navbar-nav ms-auto">
         <!-- Link alla pagina Eventi, sempre visibile -->
         <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/events" routerLinkActive="active">Eventi</a>
+          <a class="nav-link text-white" routerLink="/events" routerLinkActive="active">Cerca Eventi</a>
         </li>
 
         <!-- Link alle Prenotazioni, sempre visibile -->
         <li class="nav-item">
-          <a class="nav-link text-white" routerLink="/reservations" routerLinkActive="active">Prenotazioni</a>
+          <a class="nav-link text-white" routerLink="/reservations" routerLinkActive="active">Le Tue Prenotazioni</a>
         </li>
 
         <!-- Visibile solo per utenti con ruolo ADMIN -->
@@ -52,7 +52,7 @@
             <span class="nav-link text-white">Benvenuto {{ userName }}!</span>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" style="cursor: pointer" (click)="logout()">Logout</a>
+            <a class="nav-link text-white" style="cursor: pointer" (click)="logout()">Disconnettiti</a>
           </li>
         </ng-container>
       </ul>
