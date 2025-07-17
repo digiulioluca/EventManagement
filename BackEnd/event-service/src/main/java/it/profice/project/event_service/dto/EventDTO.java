@@ -1,10 +1,7 @@
 package it.profice.project.event_service.dto;
 
 import it.profice.project.event_service.model.Category;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,11 +22,12 @@ public class EventDTO {
     @NotNull
     @NotEmpty
     private String title;
-    @Size(max = 100)
+    @Size(max = 1000)
     @NotNull
     @NotEmpty
     private String description;
     @NotNull
+    @Future
     private Date date;
     @NotNull
     @NotEmpty
