@@ -16,3 +16,6 @@ BackEnd/user-service/src/main/resources/application.properties
 BackEnd/reservation-service/src/main/resources/application.properties
 BackEnd/user-service/src/main/resources/application.properties
 BackEnd/event-service/src/main/resources/application.properties
+BackEnd/user-service/src/main/resources/application.properties
+BackEnd/event-service/src/main/resources/application.properties
+BackEnd/reservation-service/src/main/resources/application.properties

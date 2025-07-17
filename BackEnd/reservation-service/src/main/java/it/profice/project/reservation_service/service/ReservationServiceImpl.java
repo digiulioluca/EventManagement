@@ -1,6 +1,7 @@
 package it.profice.project.reservation_service.service;
 
 import it.profice.project.event_service.dto.EventDTO;
+import it.profice.project.event_service.exception.EventNotFoundException;
 import it.profice.project.reservation_service.dto.ReservationDTO;
 import it.profice.project.reservation_service.model.Reservation;
 import it.profice.project.reservation_service.repository.ReservationRepository;
@@ -33,7 +34,29 @@ public class ReservationServiceImpl implements ReservationService {
      * @return ReservationDTO generato
      */
     @Override
-    public ReservationDTO save(ReservationDTO reservation){
+    public ReservationDTO save(ReservationDTO reservation) {
+        EventDTO event = webClientBuilder.build()
+                .get()
+                .uri("http://event-service/api/v1/events/{uuid}", reservation.getEventUuid())
+                .retrieve()
+                .bodyToMono(EventDTO.class)
+                .block();
+
+        if (event == null)
+            throw new EventNotFoundException();
+
+        event = webClientBuilder.build()
+                .patch()
+                .uri("http://event-service/api/v1/events/{uuid}", reservation.getEventUuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(Map.of("availableSeats", event.getAvailableSeats()-1))
+                .retrieve()
+                .bodyToMono(EventDTO.class)
+                .block();
+
+        reservation.setEventDate(event.getDate());
+        reservation.setEventTitle(event.getTitle());
+        reservation.setEventLocation(event.getLocation());
         reservation.setUuid(UUID.randomUUID().toString());
         reservation.setDate(LocalDate.now());
         return modelToDto(reservationRepository.save(dtoToModel(reservation)));
@@ -48,6 +71,25 @@ public class ReservationServiceImpl implements ReservationService {
     public void delete(String uuid) {
         Reservation reservation = reservationRepository.findByUuid(uuid)
                 .orElseThrow(() -> new ReservationNotFoundException("Prenotazione con uuid " + uuid + " non trovata"));
+
+
+        EventDTO event = webClientBuilder.build()
+                .get()
+                .uri("http://event-service/api/v1/events/{uuid}", reservation.getEventUuid())
+                .retrieve()
+                .bodyToMono(EventDTO.class)
+                .block();
+
+
+        event = webClientBuilder.build()
+                .patch()
+                .uri("http://event-service/api/v1/events/{uuid}", reservation.getEventUuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(Map.of("availableSeats", event.getAvailableSeats()+1))
+                .retrieve()
+                .bodyToMono(EventDTO.class)
+                .block();
+
 
         reservationRepository.deleteById(reservation.getId());
     }
@@ -95,26 +137,12 @@ public class ReservationServiceImpl implements ReservationService {
                 .bodyToMono(EventDTO.class)
                 .block();
 
-        if (event == null) {
-            throw new RuntimeException("Evento non trovato per uuid: " + reservation.getEventUuid());
-        }
-
-        event = webClientBuilder.build()
-                .patch()
-                .uri("http://event-service/api/v1/events/{uuid}", event.getUuid())
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(Map.of("availableSeats", event.getAvailableSeats()-1))
-                .retrieve()
-                .bodyToMono(EventDTO.class)
-                .block();
-
-
         return ReservationDTO.builder()
                 .uuid(reservation.getUuid())
-                .date(reservation.getDate())
                 .eventTitle(event.getTitle())
                 .eventDate(event.getDate())
                 .eventLocation(event.getLocation())
+                .date(reservation.getDate())
                 .build();
     }
 

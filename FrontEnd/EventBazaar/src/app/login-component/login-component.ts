@@ -39,13 +39,13 @@ export class LoginComponent {
           // Salva l'UUID dell'utente nel localStorage
           localStorage.setItem('uuid', res.uuid);
           this.userService.loadUserByUuid(res.uuid);
-          window.location.reload();
-
+        
           // Notifica e reindirizzamento
+          this.router.navigate(['/']).then(() => {
+          window.location.reload();});
           alert('Accesso riuscito!');
-          this.router.navigate(['/events']);
-        },
-        error: (err) => {
+      },
+      error: (err) => {
           // Gestione errori di login
           alert('Errore: ' + (err.error?.message || 'Credenziali non valide'));
         },
