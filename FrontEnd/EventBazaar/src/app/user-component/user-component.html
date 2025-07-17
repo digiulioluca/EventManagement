@@ -14,7 +14,7 @@
       <p><strong>Email:</strong> {{ user.email }}</p>
       <p><strong>Ruolo:</strong> {{ user.role }}</p>
 
-      <div class="d-flex justify-content-between mt-3">
+      <div class="d-flex justify-content-between mt-3 flex-wrap gap-2">
         <button
           class="btn btn-sm"
           style="background-color: #fcc902; color: #0c0b0b;"
@@ -33,7 +33,7 @@
     </div>
 
     <!-- Modalità modifica -->
-    <div *ngIf="editMode && editableUser" class="reservation-item">
+    <div *ngIf="editMode && editableUser" class="reservation-item mt-4">
       <form (ngSubmit)="saveEdit()">
         <label>
           Nome:
@@ -45,7 +45,7 @@
         </label>
         <p><strong>Ruolo:</strong> {{ user.role }}</p>
 
-        <div class="d-flex justify-content-between mt-3">
+        <div class="d-flex justify-content-between mt-3 flex-wrap gap-2">
           <button type="submit" class="btn btn-sm" style="background-color: #fcc902; color: #0c0b0b;">
             <i class="bi bi-save"></i> Salva
           </button>

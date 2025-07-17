@@ -1,179 +1,254 @@
-<div class="booking-container container my-5">
+<!-- Contenitore principale -->
+<div class="event-container">
 
-  <!-- Loading -->
-  <div *ngIf="isLoading" class="loading">Caricamento eventi...</div>
+  <!-- Messaggio caricamento -->
+  <div *ngIf="isLoading" aria-live="polite" class="text-center my-4">
+    <div class="spinner-border text-warning" role="status">
+      <span class="visually-hidden">Caricamento...</span>
+    </div>
+    <p class="mt-2">Caricamento eventi</p>
+  </div>
 
-    <!-- Vista lista eventi -->
-    <div *ngIf="!editMode && !addMode && !event">
+  <!-- Contenuto principale -->
+  <div *ngIf="!isLoading">
 
-      <h2 class="text-center mb-4">
-        {{ eventsState ? '🎉 Eventi correnti' : '📅 Eventi conclusi' }}
-      </h2>
+    <!-- Vista lista eventi o dettaglio -->
+    <div *ngIf="!editMode && !addMode">
 
-      <ul class="reservation-list">
-        <li
-          *ngFor="let ev of events"
-          class="reservation-item"
-          [class.disabled]="ev.state !== eventsState"
-          (click)="selectEvent(ev)"
-          style="cursor: pointer;"
-        >
-          <h5 class="mb-2 text-uppercase">{{ ev.title }}</h5>
-          <p><strong>📍 Luogo:</strong> {{ ev.location }}</p>
-          <p><strong>📅 Data evento:</strong> {{ ev.date | date : 'dd/MM/yyyy' }}</p>
-        </li>
-      </ul>
+      <!-- Titolo principale -->
+      <h1 *ngIf="!event" class="text-warning fw-bold mb-4 text-center">
+        {{ eventsState ? 'Eventi correnti' : 'Eventi conclusi' }}
+      </h1>
 
-      <div class="d-flex justify-content-between mt-3">
-        <button
-          class="btn btn-sm"
-          style="background-color: #ac8905; color: white;"
-          (click)="eventsState = !eventsState"
-        >
-          {{ eventsState ? 'Mostra eventi conclusi' : 'Mostra eventi correnti' }}
-        </button>
-        <button
-          class="btn btn-sm"
-          style="background-color: #fcc902; color: #0c0b0b;"
-          (click)="addEvent()"
-        >
-          <i class="bi bi-plus-circle"></i> Aggiungi nuovo evento
-        </button>
+
+    <!-- Lista eventi -->
+    <div *ngIf="!editMode && !addMode && !event" class="booking-container container my-5">
+      <h2>📅 Elenco Eventi</h2>
+
+      <div *ngIf="events.length > 0; else noEvents" class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" *ngFor="let event of events">
+          <div class="reservation-item h-100" [class.disabled]="event.state !== eventsState" (click)="selectEvent(event)">
+            <h5 class="mb-2 text-uppercase">{{ event.title }}</h5>
+            <p><strong>📍 Luogo:</strong> {{ event.location }}</p>
+            <p><strong>📅 Data evento:</strong> {{ event.date | date: 'dd/MM/yyyy' }}</p>
+          </div>
+        </div>
       </div>
+
+      <ng-template #noEvents>
+        <div class="no-events-message" aria-live="polite">Nessun evento trovato.</div>
+      </ng-template>
     </div>
 
-    <!-- Vista dettaglio evento -->
-    <div *ngIf="event && !editMode && !addMode" class="reservation-item">
-      <h3 class="mb-3 text-uppercase">{{ event.title }}</h3>
-      <p><strong>Descrizione:</strong> {{ event.description }}</p>
-      <p><strong>📅 Data:</strong> {{ event.date | date : 'dd/MM/yyyy' }}</p>
-      <p><strong>📍 Location:</strong> {{ event.location }}</p>
-      <p><strong>🎟️ Posti totali:</strong> {{ event.totalSeats }}</p>
-      <p><strong>💺 Posti liberi:</strong> {{ event.availableSeats }}</p>
-      <p><strong>📌 Stato:</strong> {{ event.state ? 'Da svolgersi' : 'Terminato' }}</p>
-      <p><strong>🏷️ Categoria:</strong> {{ event.eventCategory }}</p>
 
-      <div class="d-flex justify-content-between mt-3">
-        <button
-          *ngIf="event.state"
-          class="btn btn-sm"
-          style="background-color: #fcc902; color: #0c0b0b;"
-          (click)="enableEdit()"
-        >
+      <!-- Pulsanti per cambio vista e aggiunta -->
+      <div class="button-group" *ngIf="!event">
+        <button class="btn btn-secondary" (click)="eventsState = !eventsState">
+          {{ eventsState ? 'Mostra eventi conclusi' : 'Mostra eventi correnti' }}
+        </button>
+        <button class="btn btn-primary" (click)="addEvent()">Aggiungi nuovo evento</button>
+      </div>
+
+      <!-- Dettaglio evento selezionato -->
+      <div *ngIf="event" class="event-detail mt-4">
+        <h2 class="text-warning">{{ event.title }}</h2>
+        <p><strong>Titolo:</strong> {{ event.title }}</p>
+        <p><strong>Descrizione:</strong> {{ event.description }}</p>
+        <p><strong>Data:</strong> {{ event.date | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p><strong>Posti totali:</strong> {{ event.totalSeats }}</p>
+        <p><strong>Posti disponibili:</strong> {{event.availableSeats}}</p>
+        <p><strong>Stato:</strong> {{ event.state ? 'In corso' : 'Terminato' }}</p>
+        <p><strong>Categoria:</strong> {{ event.eventCategory }}</p>
+
+        <!-- Pulsanti azione dettaglio -->
+        <button *ngIf="event.state" class="btn btn-primary me-2" (click)="enableEdit()">
           <i class="bi bi-pencil-square"></i> Modifica
         </button>
-
-        <button
-          class="btn btn-sm"
-          style="background-color: #ac8905; color: white;"
-          (click)="deleteEvent()"
-        >
-          <i class="bi bi-trash3"></i> Elimina
-        </button>
-
-        <button
-          class="btn btn-sm"
-          style="background-color: #5c4a08; color: white;"
-          (click)="event = null"
-        >
+        <button class="btn btn-secondary me-2" (click)="event = null">
           <i class="bi bi-x-circle"></i> Annulla
         </button>
+        <button class="btn btn-danger" (click)="deleteEvent()">
+          <i class="bi bi-trash3"></i> Elimina
+        </button>
       </div>
+
     </div>
 
     <!-- Form modifica evento -->
-    <div *ngIf="editMode && editableEvent" class="reservation-item">
-      <h3 class="mb-3 text-uppercase">Modifica: {{ editableEvent.title }}</h3>
-      <form (ngSubmit)="saveEdit()">
-        <label>
-          Titolo:
-          <input [(ngModel)]="editableEvent.title" name="title" required />
-        </label>
-        <label>
-          Descrizione:
-          <input [(ngModel)]="editableEvent.description" name="description" />
-        </label>
-        <label>
-          Data:
-          <input type="date" [(ngModel)]="editableEvent.date" name="date" />
-        </label>
-        <label>
-          Location:
-          <input [(ngModel)]="editableEvent.location" name="location" />
-        </label>
-        <label>
-          Posti totali:
-          <input type="number" [(ngModel)]="editableEvent.totalSeats" name="totalSeats" />
-        </label>
-        <label>
-          Posti liberi:
-          <input type="number" [(ngModel)]="editableEvent.availableSeats" name="availableSeats" />
-        </label>
-        <label>
-          Stato:
-          <input type="checkbox" [(ngModel)]="editableEvent.state" name="state" /> Da svolgersi
-        </label>
-        <label>
-          Categoria:
-          <select [(ngModel)]="editableEvent.eventCategory" name="eventCategory">
-            <option *ngFor="let cat of eventCategories" [value]="cat">{{ cat }}</option>
-          </select>
-        </label>
+    <div *ngIf="editMode" class="mt-4">
+      <h2 class="text-warning mb-4">Modifica evento</h2>
+      <form [formGroup]="editEventForm" (ngSubmit)="saveEdit()" novalidate>
 
-        <div class="d-flex justify-content-between mt-3">
-          <button type="submit" class="btn btn-sm" style="background-color: #fcc902; color: #0c0b0b;">
-            <i class="bi bi-save"></i> Salva
-          </button>
-          <button type="button" class="btn btn-sm" style="background-color: #5c4a08; color: white;" (click)="cancelEdit()">
-            <i class="bi bi-x-circle"></i> Annulla
-          </button>
-          <button type="button" class="btn btn-sm" style="background-color: #ac8905; color: white;" (click)="deleteEvent()">
-            <i class="bi bi-trash3"></i> Elimina
-          </button>
+        <!-- Titolo -->
+        <div class="mb-3">
+          <label for="titleEdit" class="form-label"><strong>Titolo:</strong></label>
+          <input id="titleEdit" formControlName="title" placeholder="Inserisci il titolo" class="form-control">
+          <div *ngIf="editEventForm.get('title')?.touched && editEventForm.get('title')?.errors?.['minlength']" class="text-danger small">
+            Deve contenere almeno 6 caratteri
+          </div>
+          <div *ngIf="editEventForm.get('title')?.touched && editEventForm.get('title')?.errors?.['maxlength']" class="text-danger small">
+            Non può superare 50 caratteri
+          </div>
+          <div *ngIf="showValidationErrors && editEventForm.get('title')?.errors?.['required']" class="text-danger small">
+            Il titolo è obbligatorio
+          </div>
         </div>
+
+        <!-- Descrizione -->
+        <div class="mb-3">
+          <label for="descriptionEdit" class="form-label"><strong>Descrizione:</strong></label>
+          <input id="descriptionEdit" formControlName="description" placeholder="Inserisci la descrizione" class="form-control">
+          <div *ngIf="editEventForm.get('description')?.touched && editEventForm.get('description')?.errors?.['maxlength']" class="text-danger small">
+            La descrizione non può superare 1000 caratteri
+          </div>
+          <div *ngIf="showValidationErrors && editEventForm.get('description')?.errors?.['required']" class="text-danger small">
+            La descrizione è obbligatoria
+          </div>
+        </div>
+
+        <!-- Data -->
+        <div class="mb-3">
+          <label for="dateEdit" class="form-label"><strong>Data:</strong></label>
+          <input id="dateEdit" type="date" formControlName="date" [min]="todayString" class="form-control" placeholder="Seleziona la data">
+          <div *ngIf="showValidationErrors && editEventForm.get('date')?.errors?.['required']" class="text-danger small">
+            La data è obbligatoria
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+          <label for="locationEdit" class="form-label"><strong>Location:</strong></label>
+          <input id="locationEdit" formControlName="location" placeholder="Inserisci la location" class="form-control">
+          <div *ngIf="showValidationErrors && editEventForm.get('location')?.errors?.['required']" class="text-danger small">
+            La location è obbligatoria
+          </div>
+        </div>
+
+        <!-- Posti totali -->
+        <div class="mb-3">
+          <label for="totalSeatsEdit" class="form-label"><strong>Posti totali:</strong></label>
+          <input id="totalSeatsEdit" type="number" formControlName="totalSeats" class="form-control" min="100">
+          <div *ngIf="editEventForm.get('totalSeats')?.touched && editEventForm.get('totalSeats')?.errors?.['min']" class="text-danger small">
+            Minimo 100 posti
+          </div>
+          <div *ngIf="showValidationErrors && editEventForm.get('totalSeats')?.errors?.['required']" class="text-danger small">
+            I posti totali sono obbligatori
+          </div>
+        </div>
+
+        <!-- Posti liberi -->
+        <div class="mb-3">
+          <label for="availableSeatsEdit" class="form-label"><strong>Posti liberi:</strong></label>
+          <input id="availableSeatsEdit" type="number" formControlName="availableSeats" class="form-control" min="0">
+          <div *ngIf="editEventForm.get('availableSeats')?.touched && editEventForm.get('availableSeats')?.errors?.['min']" class="text-danger small">
+            Minimo 0 posti liberi
+          </div>
+        </div>
+
+        <div class="form-check mb-3">
+          <input id="stateEdit" type="checkbox" formControlName="state" class="form-check-input">
+          <label for="stateEdit" class="form-check-label"><strong>Stato:</strong> <span>{{editEventForm.get('state')?.value ? 'Da svolgersi' : 'Terminato'}}</span></label>
+        </div>
+
+        <div class="mb-3">
+          <label for="eventCategoryEdit" class="form-label"><strong>Categoria:</strong></label>
+          <select id="eventCategoryEdit" formControlName="eventCategory" class="form-select">
+            <option [ngValue]="null" disabled>Seleziona categoria</option>
+            <option *ngFor="let cat of eventCategories" [value]="cat">{{cat}}</option>
+          </select>
+          <div *ngIf="showValidationErrors && editEventForm.get('eventCategory')?.errors?.['required']" class="text-danger small">
+            La categoria è obbligatoria
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-custom me-2">
+          <i class="bi bi-check-circle"></i> Salva
+        </button>
+        <button type="button" class="btn btn-secondary me-2" (click)="cancelEdit()">
+          <i class="bi bi-x-circle"></i> Annulla
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteEvent()">
+          <i class="bi bi-trash3"></i> Elimina
+        </button>
       </form>
     </div>
 
-    <!-- Form aggiungi evento -->
-    <div *ngIf="addMode && newEvent" class="reservation-item">
-      <h3 class="mb-3 text-uppercase">Nuovo Evento</h3>
-      <form (ngSubmit)="saveNewEvent()">
-        <label>
-          Titolo:
-          <input [(ngModel)]="newEvent.title" name="title" required />
-        </label>
-        <label>
-          Descrizione:
-          <input [(ngModel)]="newEvent.description" name="description" />
-        </label>
-        <label>
-          Data:
-          <input type="date" [(ngModel)]="newEvent.date" name="date" />
-        </label>
-        <label>
-          Location:
-          <input [(ngModel)]="newEvent.location" name="location" />
-        </label>
-        <label>
-          Posti totali:
-          <input type="number" [(ngModel)]="newEvent.totalSeats" name="totalSeats" />
-        </label>
-        <label>
-          Categoria:
-          <select [(ngModel)]="newEvent.eventCategory" name="eventCategory">
-            <option *ngFor="let cat of eventCategories" [value]="cat">{{ cat }}</option>
-          </select>
-        </label>
+    <!-- Form aggiunta evento -->
+    <div *ngIf="addMode" class="mt-4">
+      <h2 class="text-warning mb-4">Nuovo Evento</h2>
+      <form [formGroup]="addEventForm" (ngSubmit)="saveNewEvent()" novalidate>
 
-        <div class="d-flex justify-content-between mt-3">
-          <button type="submit" class="btn btn-sm" style="background-color: #fcc902; color: #0c0b0b;">
-            <i class="bi bi-save"></i> Salva
-          </button>
-          <button type="button" class="btn btn-sm" style="background-color: #5c4a08; color: white;" (click)="cancelAdd()">
-            <i class="bi bi-x-circle"></i> Annulla
-          </button>
+        <div class="mb-3">
+          <label for="titleAdd" class="form-label"><strong>Titolo:</strong></label>
+          <input id="titleAdd" formControlName="title" placeholder="Inserisci il titolo" class="form-control">
+          <div *ngIf="addEventForm.get('title')?.touched && addEventForm.get('title')?.errors?.['minlength']" class="text-danger small">
+            Deve contenere almeno 6 caratteri
+          </div>
+          <div *ngIf="addEventForm.get('title')?.touched && addEventForm.get('title')?.errors?.['maxlength']" class="text-danger small">
+            Non può superare 50 caratteri
+          </div>
+          <div *ngIf="showValidationErrors && addEventForm.get('title')?.errors?.['required']" class="text-danger small">
+            Il titolo è obbligatorio
+          </div>
         </div>
+
+        <div class="mb-3">
+          <label for="descriptionAdd" class="form-label"><strong>Descrizione:</strong></label>
+          <input id="descriptionAdd" formControlName="description" placeholder="Inserisci la descrizione" class="form-control">
+          <div *ngIf="addEventForm.get('description')?.touched && addEventForm.get('description')?.errors?.['maxlength']" class="text-danger small">
+            La descrizione non può superare 1000 caratteri
+          </div>
+          <div *ngIf="showValidationErrors && addEventForm.get('description')?.errors?.['required']" class="text-danger small">
+            La descrizione è obbligatoria
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="dateAdd" class="form-label"><strong>Data:</strong></label>
+          <input id="dateAdd" type="date" formControlName="date" [min]="todayString" class="form-control" placeholder="Seleziona la data">
+          <div *ngIf="showValidationErrors && addEventForm.get('date')?.errors?.['required']" class="text-danger small">
+            La data è obbligatoria
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="locationAdd" class="form-label"><strong>Location:</strong></label>
+          <input id="locationAdd" formControlName="location" placeholder="Inserisci la location" class="form-control">
+          <div *ngIf="showValidationErrors && addEventForm.get('location')?.errors?.['required']" class="text-danger small">
+            La location è obbligatoria
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="totalSeatsAdd" class="form-label"><strong>Posti totali:</strong></label>
+          <input id="totalSeatsAdd" type="number" formControlName="totalSeats" class="form-control">
+          <div *ngIf="addEventForm.get('totalSeats')?.touched && addEventForm.get('totalSeats')?.errors?.['min']" class="text-danger small">
+            Minimo 100 posti
+          </div>
+          <div *ngIf="showValidationErrors && addEventForm.get('totalSeats')?.errors?.['required']" class="text-danger small">
+            I posti totali sono obbligatori
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="eventCategoryAdd" class="form-label"><strong>Categoria:</strong></label>
+          <select id="eventCategoryAdd" formControlName="eventCategory" class="form-select">
+            <option [ngValue]="null" disabled>Seleziona categoria</option>
+            <option *ngFor="let cat of eventCategories" [value]="cat">{{cat}}</option>
+          </select>
+          <div *ngIf="showValidationErrors && addEventForm.get('eventCategory')?.errors?.['required']" class="text-danger small">
+            La categoria è obbligatoria
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-custom me-2">
+          <i class="bi bi-check-circle"></i> Salva
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancelAdd()">
+          <i class="bi bi-x-circle"></i> Annulla
+        </button>
       </form>
     </div>
-
   </div>
+</div>
