@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angula
 import { HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { UserDTO } from '../module/userDTO';
+import { UserDTO } from '../model/userDTO';
 
 @Component({
   selector: 'app-register', // Selettore del componente

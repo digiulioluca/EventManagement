@@ -42,7 +42,10 @@ export class LoginComponent {
         
           // Notifica e reindirizzamento
           this.router.navigate(['/']).then(() => {
-          window.location.reload();});
+          setTimeout(() => {
+            window.location.reload();
+          }, 100);
+        });
           alert('Accesso riuscito!');
       },
       error: (err) => {

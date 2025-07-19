@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { BookingService, ReservationDTO } from '../service/booking.service';
+import { BookingService } from '../service/booking.service';
 import { CommonModule } from '@angular/common';
 import { catchError, tap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
+import { ReservationDTO } from '../model/reservationDTO';
 
 @Component({
   selector: 'app-booking',

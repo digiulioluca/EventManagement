@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { EventDTO, EventService } from '../service/event.service';
+import { EventService } from '../service/event.service';
 import { catchError, tap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
-import { BookingService, RequestDTO } from '../service/booking.service';
+import { BookingService } from '../service/booking.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../service/user.service'; // Assicurati che questo tipo esista
-import { UserDTO } from '../module/userDTO';
+import { UserDTO } from '../model/userDTO';
+import { EventDTO } from '../model/eventDTO';
+import { RequestDTO } from '../model/reservationDTO';
 
 @Component({
   selector: 'app-home-component',

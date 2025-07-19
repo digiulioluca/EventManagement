@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { UserDTO } from '../module/userDTO';
+import { UserDTO } from '../model/userDTO';
 
 @Injectable({ providedIn: 'root' }) // Rende il servizio disponibile globalmente nell'app (singleton)
 export class UserService {

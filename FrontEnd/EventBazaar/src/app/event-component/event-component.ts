@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EventCategory, EventDTO, EventService } from '../service/event.service';
+import { EventService } from '../service/event.service';
 import { DatePipe } from '@angular/common';
-import { BookingService, RequestDTO } from '../service/booking.service';
+import { BookingService } from '../service/booking.service';
+import { EventCategory, EventDTO } from '../model/eventDTO';
+import { RequestDTO } from '../model/reservationDTO';
 
 @Component({
   selector: 'app-event',

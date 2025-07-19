@@ -3,10 +3,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { UserDTO } from '../module/userDTO';
-import { EventCategory, EventDTO } from '../service/event.service';
+import { UserDTO } from '../model/userDTO';
 import { EventDetailsComponent } from '../event-details-component/event-details-component';
 import { EventService } from '../service/event.service';
+import { EventCategory, EventDTO } from '../model/eventDTO';
 
 @Component({
   selector: 'app-admin-component',

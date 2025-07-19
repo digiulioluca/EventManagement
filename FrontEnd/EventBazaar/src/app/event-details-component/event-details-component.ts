@@ -1,8 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { EventDTO, EventService } from '../service/event.service';
+import { EventService } from '../service/event.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BookingService, RequestDTO } from '../service/booking.service';
+import { BookingService } from '../service/booking.service';
+import { EventDTO } from '../model/eventDTO';
+import { RequestDTO } from '../model/reservationDTO';
 
 @Component({
   selector: 'app-event-details-component',
