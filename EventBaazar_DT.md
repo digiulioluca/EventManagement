@@ -61,7 +61,7 @@ L'interfaccia utente di EventBaazar è stata realizzata con Angular, framework c
 
 Di seguito possiamo osservare il diagramma UML con i tre micro-servizi e i collegamenti tra di essi
 
-![UML Events Diagram(2).png](UML_Events_Diagram(2).png)
+![UML_Events_Diagram(2).png](UML_Events_Diagram(2).png)
 
 ## 3.2 Dettaglio microservizi
 
